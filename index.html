@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>João Victor | Desenvolvedor Fullstack</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --neon: #39ff14;
+      --neon-dim: rgba(57,255,20,0.12);
+      --neon-mid: rgba(57,255,20,0.35);
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #181818;
+      --border: rgba(255,255,255,0.08);
+      --text: #e8e8e8;
+      --muted: #888;
+      --font: 'Inter', sans-serif;
+      --mono: 'Fira Code', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+    ::selection { background: var(--neon-dim); color: var(--neon); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--neon-mid); border-radius: 2px; }
+    a { color: var(--neon); text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 5%; height: 64px;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 0.5px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(57,255,20,0.06); }
+
+    .nav-logo {
+      font-family: var(--mono); font-size: 1.05rem;
+      color: var(--neon); letter-spacing: 0.05em;
+      position: relative; cursor: default;
+    }
+    .nav-logo::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--neon);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-logo:hover::after { transform: scaleX(1); }
+
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a {
+      display: flex; align-items: center; gap: 5px;
+      padding: 0.45rem 0.9rem;
+      color: var(--muted); font-size: 0.82rem; letter-spacing: 0.06em;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .nav-links a .nav-num {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--neon); opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-links a::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--neon-dim);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+      border-radius: 6px;
+    }
+    .nav-links a:hover { color: var(--neon); }
+    .nav-links a:hover::before { transform: scaleX(1); }
+    .nav-links a:hover .nav-num { opacity: 1; }
+    .nav-links a.active { color: var(--neon); }
+    .nav-links a.active .nav-num { opacity: 1; }
+    /* active underline pill */
+    .nav-links a.active::after {
+      content: '';
+      position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 2px;
+      background: var(--neon); border-radius: 2px;
+    }
+
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0.45rem 1rem;
+      font-size: 0.8rem; font-weight: 500; font-family: var(--font);
+      color: var(--neon);
+      border: 0.5px solid var(--neon-mid); border-radius: 6px;
+      background: transparent; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover {
+      background: var(--neon-dim);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(57,255,20,0.15);
+    }
+    .nav-cta svg { transition: transform 0.2s; }
+    .nav-cta:hover svg { transform: translateX(2px); }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 5%; max-width: 1100px; margin: 0 auto; }
+
+    /* ── HERO ── */
+    .hero-wrap {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 0 5%; padding-top: 5rem;
+    }
+    #hero { padding: 0; max-width: 1100px; width: 100%; }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 0.82rem;
+      color: var(--neon); letter-spacing: 0.12em;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--neon);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(57,255,20,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(57,255,20,0); }
+    }
+
+    .hero-name {
+      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700;
+      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+    .hero-title {
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 300;
+      color: var(--muted); margin-bottom: 1.5rem;
+      min-height: 2em;
+    }
+    .hero-title .typed-highlight { color: var(--neon); font-weight: 500; }
+    .cursor {
+      display: inline-block; width: 2px; height: 1.1em;
+      background: var(--neon); margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-bio {
+      max-width: 600px; color: var(--muted);
+      font-size: 1rem; margin-bottom: 2.5rem; line-height: 1.8;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.75rem; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; border: none; font-family: var(--font);
+    }
+    .btn-primary { background: var(--neon); color: #000; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(57,255,20,0.25); }
+    .btn-outline { background: transparent; color: var(--neon); border: 1px solid var(--neon-mid); }
+    .btn-outline:hover { background: var(--neon-dim); transform: translateY(-1px); }
+
+    .hero-scroll {
+      position: absolute; bottom: -3rem; left: 5%;
+      display: flex; align-items: center; gap: 0.75rem;
+      color: var(--muted); font-size: 0.72rem;
+      font-family: var(--mono); letter-spacing: 0.08em;
+      animation: fadeInUp 1s 2.5s both;
+    }
+    .scroll-line { width: 40px; height: 0.5px; background: var(--muted); }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+    /* ── TERMINAL BLOCK (Sobre) ── */
+    .terminal {
+      background: #0d0d0d;
+      border: 0.5px solid rgba(57,255,20,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 0.6rem 1rem;
+      background: #161616;
+      border-bottom: 0.5px solid rgba(57,255,20,0.1);
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot-r { background: #ff5f57; }
+    .t-dot-y { background: #febc2e; }
+    .t-dot-g { background: #28c840; }
+    .terminal-title { margin-left: 6px; font-size: 0.72rem; color: var(--muted); }
+    .terminal-body { padding: 1.25rem 1.25rem 1.5rem; line-height: 2; }
+    .t-prompt { color: var(--neon); }
+    .t-cmd { color: #e8e8e8; }
+    .t-out { color: var(--muted); display: block; padding-left: 1rem; }
+    .t-out-green { color: var(--neon); display: block; padding-left: 1rem; }
+    .t-line { display: block; margin-bottom: 0.25rem; }
+
+    /* ── SECTION HEADERS ── */
+    .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+    .section-num { font-family: var(--mono); font-size: 0.8rem; color: var(--neon); }
+    .section-title { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.01em; }
+    .section-line { flex: 1; height: 0.5px; background: var(--border); }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; line-height: 1.8; }
+    .about-photo-placeholder {
+      aspect-ratio: 1; max-width: 320px; border-radius: 12px;
+      background: var(--surface2);
+      border: 1px dashed rgba(57,255,20,0.3);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.75rem; color: var(--muted); font-size: 0.875rem;
+    }
+    .about-langs { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .lang-badge {
+      padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.8rem;
+      border: 0.5px solid var(--neon-mid); color: var(--neon); background: var(--neon-dim);
+    }
+
+    /* ── STACK ── */
+    .stack-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .stack-group { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 1.5rem; transition: border-color 0.2s; }
+    .stack-group:hover { border-color: var(--neon-mid); }
+    .stack-group-label { font-family: var(--mono); font-size: 0.72rem; color: var(--neon); letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .stack-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .stack-item { padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.8rem; background: var(--surface2); border: 0.5px solid var(--border); color: var(--text); transition: border-color 0.2s, color 0.2s; }
+    .stack-item:hover { border-color: var(--neon-mid); color: var(--neon); }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0.5px; background: var(--border); }
+    .timeline-item { position: relative; margin-bottom: 3rem; }
+    .timeline-dot { position: absolute; left: -2.4rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+    .timeline-period { font-family: var(--mono); font-size: 0.75rem; color: var(--neon); margin-bottom: 0.25rem; }
+    .timeline-role { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.15rem; }
+    .timeline-company { font-size: 0.875rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+    .timeline-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .timeline-tag { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 3px; background: var(--surface2); color: var(--muted); border: 0.5px solid var(--border); }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 1.75rem;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--neon); opacity: 0; transition: opacity 0.25s;
+    }
+    .project-card:hover { border-color: var(--neon-mid); transform: translateY(-3px); }
+    .project-card:hover::before { opacity: 1; }
+    .project-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; }
+    .project-name { font-size: 1rem; font-weight: 600; }
+    .project-year { font-family: var(--mono); font-size: 0.75rem; color: var(--neon); }
+    .project-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .project-tag { font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 3px; background: var(--neon-dim); color: var(--neon); }
+
+    /* ── CONTACT ── */
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-text h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
+    .contact-text p { color: var(--muted); line-height: 1.8; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.875rem;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      text-decoration: none;
+    }
+    .contact-link:hover { border-color: var(--neon-mid); background: var(--surface2); transform: translateX(4px); color: var(--text); }
+    .contact-link-icon { width: 36px; height: 36px; border-radius: 6px; background: var(--neon-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--neon); }
+    .contact-link-label { font-size: 0.75rem; color: var(--muted); }
+    .contact-link-value { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 0.5px solid var(--border); padding: 2rem 5%; text-align: center; color: var(--muted); font-size: 0.8rem; font-family: var(--mono); }
+    footer span { color: var(--neon); }
+
+    /* ── FADE-IN ON SCROLL ── */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    /* ── DATA ── */
+    const NAV_ITEMS = [
+      { num: '01', label: 'Sobre',      href: '#sobre' },
+      { num: '02', label: 'Stack',      href: '#stack' },
+      { num: '03', label: 'Exp.',       href: '#experiencia' },
+      { num: '04', label: 'Projetos',   href: '#projetos' },
+      { num: '05', label: 'Contato',    href: '#contato' },
+    ];
+
+    const STACK = [
+      { label: 'FRONTEND',      items: ['Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
+      { label: 'BACKEND',       items: ['PHP','Laravel','Node.js'] },
+      { label: 'BANCO DE DADOS',items: ['MySQL','SQL'] },
+      { label: 'FERRAMENTAS',   items: ['Postman','REST APIs','ArcGIS','Excel','Git'] },
+    ];
+
+    const EXPERIENCE = [
+      { period:'2024 — 2025', role:'Desenvolvedor Fullstack (MEI)', company:'Projetos Próprios',
+        desc:'Desenvolvimento de projetos paralelos como empreendedor individual, incluindo sistema voltado a casas de apostas e plataforma de comércio de produtos.',
+        tags:['Node.js','React','SQL','APIs REST'] },
+      { period:'2023 — 2024', role:'Programador', company:'Bravo Logísticas',
+        desc:'Criação e manutenção de telas do sistema interno da empresa. Aprimoramento técnico contínuo via cursos da plataforma Alura.',
+        tags:['Angular','Node.js','SQL'] },
+      { period:'2018 — 2023', role:'Desenvolvedor Web', company:'Valmont',
+        desc:'Migração da área administrativa para programação. Desenvolvimento e manutenção de sistemas web, criação e manutenção de APIs, testes com Postman e mentoria de estagiários.',
+        tags:['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL'] },
+      { period:'2017 — 2018', role:'Assistente Técnico', company:'Valmont',
+        desc:'Auxílio em trabalhos com utilização do ArcGIS, planilhas em Excel e suporte em plataforma interna.',
+        tags:['ArcGIS','Excel'] },
+    ];
+
+    const PROJECTS = [
+      { name:'Plataforma de Apostas', year:'2024',
+        desc:'Sistema completo voltado a casas de apostas, com gestão de usuários, transações e painéis administrativos.',
+        tags:['Fullstack','Node.js','SQL','REST API'] },
+      { name:'E-commerce de Produtos', year:'2024',
+        desc:'Plataforma de comércio eletrônico com catálogo de produtos, carrinho e fluxo de pedidos.',
+        tags:['Fullstack','Node.js','SQL'] },
+      { name:'Sistema de Gestão Interna', year:'2018–2023',
+        desc:'Desenvolvimento e manutenção de módulos de sistema ERP interno na Valmont, incluindo APIs integradas.',
+        tags:['PHP','Laravel','Vue.js','MySQL'] },
+    ];
+
+    /* ── TYPEWRITER HOOK ── */
+    function useTypewriter(text, speed = 38, delay = 0) {
+      const [displayed, setDisplayed] = useState('');
+      const [done, setDone] = useState(false);
+      useEffect(() => {
+        setDisplayed(''); setDone(false);
+        let i = 0;
+        const t = setTimeout(() => {
+          const iv = setInterval(() => {
+            i++;
+            setDisplayed(text.slice(0, i));
+            if (i >= text.length) { clearInterval(iv); setDone(true); }
+          }, speed);
+          return () => clearInterval(iv);
+        }, delay);
+        return () => clearTimeout(t);
+      }, [text, speed, delay]);
+      return { displayed, done };
+    }
+
+    /* ── TERMINAL TYPEWRITER ── */
+    function TerminalTyper({ lines }) {
+      const [visible, setVisible] = useState([]);
+      const ref = useRef(null);
+      const started = useRef(false);
+
+      useEffect(() => {
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting && !started.current) {
+            started.current = true;
+            let delay = 300;
+            lines.forEach((line, i) => {
+              setTimeout(() => setVisible(v => [...v, i]), delay);
+              delay += line.type === 'cmd' ? line.text.length * 32 + 200 : 80;
+            });
+          }
+        }, { threshold: 0.3 });
+        if (ref.current) obs.observe(ref.current);
+        return () => obs.disconnect();
+      }, []);
+
+      return (
+        <div className="terminal" ref={ref}>
+          <div className="terminal-bar">
+            <span className="t-dot t-dot-r" />
+            <span className="t-dot t-dot-y" />
+            <span className="t-dot t-dot-g" />
+            <span className="terminal-title">~/joaovhfs — bash</span>
+          </div>
+          <div className="terminal-body">
+            {lines.map((line, i) => (
+              visible.includes(i) ? (
+                <TerminalLine key={i} line={line} isLast={i === lines.length - 1} />
+              ) : null
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function TerminalLine({ line, isLast }) {
+      const [text, setText] = useState('');
+      const [done, setDone] = useState(line.type !== 'cmd');
+      useEffect(() => {
+        if (line.type !== 'cmd') { setText(line.text); return; }
+        let i = 0;
+        const iv = setInterval(() => {
+          i++;
+          setText(line.text.slice(0, i));
+          if (i >= line.text.length) { clearInterval(iv); setDone(true); }
+        }, 32);
+        return () => clearInterval(iv);
+      }, []);
+
+      if (line.type === 'cmd') return (
+        <span className="t-line">
+          <span className="t-prompt">~$ </span>
+          <span className="t-cmd">{text}</span>
+          {!done && <span className="cursor" />}
+        </span>
+      );
+      if (line.type === 'out-green') return <span className="t-out-green">{text}</span>;
+      return <span className="t-out">{text}</span>;
+    }
+
+    /* ── SECTION HEADER with typewriter on scroll ── */
+    function SectionHeader({ num, title }) {
+      const ref = useRef(null);
+      const [started, setStarted] = useState(false);
+      const { displayed, done } = useTypewriter(title, 45, 0);
+      const [show, setShow] = useState(false);
+
+      useEffect(() => {
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting && !started) { setStarted(true); setShow(true); }
+        }, { threshold: 0.5 });
+        if (ref.current) obs.observe(ref.current);
+        return () => obs.disconnect();
+      }, [started]);
+
+      return (
+        <div className="section-header" ref={ref}>
+          <span className="section-num">{num}</span>
+          <h2 className="section-title">
+            {show ? displayed : ''}
+            {show && !done && <span className="cursor" />}
+          </h2>
+          <div className="section-line" />
+        </div>
+      );
+    }
+
+    /* ── FADE IN WRAPPER ── */
+    function FadeIn({ children, delay = 0 }) {
+      const ref = useRef(null);
+      useEffect(() => {
+        const el = ref.current; if (!el) return;
+        el.style.transitionDelay = delay + 'ms';
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) { el.classList.add('visible'); obs.disconnect(); }
+        }, { threshold: 0.15 });
+        obs.observe(el);
+        return () => obs.disconnect();
+      }, []);
+      return <div className="fade-in" ref={ref}>{children}</div>;
+    }
+
+    /* ── ICONS ── */
+    const IconMail = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+    );
+    const IconGithub = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S9.1 17.4 9 18v4"/>
+        <path d="M9 18c-4.51 2-5-2-7-2"/>
+      </svg>
+    );
+    const IconPhone = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.1 6.1l.95-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.82 16.92z"/>
+      </svg>
+    );
+    const IconArrow = () => (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    );
+
+    /* ── TERMINAL LINES DATA ── */
+    const TERMINAL_LINES = [
+      { type: 'cmd',       text: 'whoami' },
+      { type: 'out-green', text: 'joao-victor-fernandes' },
+      { type: 'cmd',       text: 'cat sobre.txt' },
+      { type: 'out',       text: 'Fullstack Dev | +7 anos de experiência' },
+      { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI' },
+      { type: 'out',       text: 'PHP · Laravel · Vue · Angular · Node · MySQL' },
+      { type: 'cmd',       text: 'echo $LANGUAGES' },
+      { type: 'out-green', text: 'Português (nativo) · Inglês (B2) · Espanhol (B2)' },
+      { type: 'cmd',       text: 'echo "Always learning, always delivering."' },
+      { type: 'out-green', text: 'Always learning, always delivering.' },
+    ];
+
+    /* ── HERO TITLE rotator ── */
+    const HERO_TITLES = [
+      'Desenvolvedor Fullstack',
+      'Criador de APIs robustas',
+      'Vue · Laravel · Node',
+      'Sempre aprendendo',
+    ];
+
+    function HeroTitle() {
+      const [idx, setIdx] = useState(0);
+      const { displayed, done } = useTypewriter(HERO_TITLES[idx], 50, 400);
+      useEffect(() => {
+        if (!done) return;
+        const t = setTimeout(() => setIdx(i => (i + 1) % HERO_TITLES.length), 1800);
+        return () => clearTimeout(t);
+      }, [done, idx]);
+      return (
+        <p className="hero-title">
+          <span className="typed-highlight">{displayed}</span>
+          <span className="cursor" />
+        </p>
+      );
+    }
+
+    /* ── NAV ── */
+    function Nav() {
+      const [scrolled, setScrolled] = useState(false);
+      const [active, setActive] = useState('');
+
+      useEffect(() => {
+        const onScroll = () => {
+          setScrolled(window.scrollY > 20);
+          const sections = ['sobre','stack','experiencia','projetos','contato'];
+          let cur = '';
+          sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && window.scrollY >= el.offsetTop - 120) cur = '#' + id;
+          });
+          setActive(cur);
+        };
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+      }, []);
+
+      return (
+        <nav className={scrolled ? 'scrolled' : ''}>
+          <div className="nav-logo">&lt;JV /&gt;</div>
+          <ul className="nav-links">
+            {NAV_ITEMS.map(item => (
+              <li key={item.href}>
+                <a href={item.href} className={active === item.href ? 'active' : ''}>
+                  <span className="nav-num">{item.num}.</span>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a className="nav-cta" href="mailto:joaovhfs@gmail.com">
+            Contato <IconArrow />
+          </a>
+        </nav>
+      );
+    }
+
+    /* ── APP ── */
+    function App() {
+      return (
+        <>
+          <Nav />
+
+          {/* HERO */}
+          <div className="hero-wrap">
+            <section id="hero">
+              <div className="hero-tag">
+                <span className="hero-tag-dot" />
+                // Disponível para novas oportunidades
+              </div>
+              <h1 className="hero-name">João Victor<br/>Fernandes</h1>
+              <HeroTitle />
+              <p className="hero-bio">
+                Fullstack com experiência em empresas de médio e grande porte, desenvolvimento de APIs,
+                sistemas de gestão e projetos próprios como MEI. Sempre aprendendo, sempre entregando.
+              </p>
+              <div className="hero-cta">
+                <a className="btn btn-primary" href="#projetos">Ver projetos</a>
+                <a className="btn btn-outline" href="#contato">Entre em contato</a>
+              </div>
+            </section>
+            <div className="hero-scroll"><div className="scroll-line" />scroll</div>
+          </div>
+
+          {/* SOBRE */}
+          <section id="sobre">
+            <SectionHeader num="01." title="Sobre mim" />
+            <div className="about-grid">
+              <FadeIn>
+                <div className="about-text">
+                  <p>Comecei minha trajetória no Instituto Federal do Triângulo Mineiro com técnico em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.</p>
+                  <p>Trabalhei por anos na Valmont, onde cresci de assistente administrativo a desenvolvedor fullstack, criando e mantendo sistemas reais. Depois, ampliei meu repertório na Bravo Logísticas e dei o passo de empreender como MEI.</p>
+                  <div className="about-langs">
+                    <span className="lang-badge">🇧🇷 Português — Nativo</span>
+                    <span className="lang-badge">🇺🇸 Inglês — Intermediário Avançado</span>
+                    <span className="lang-badge">🇪🇸 Espanhol — Intermediário Avançado</span>
+                  </div>
+                </div>
+              </FadeIn>
+              <FadeIn delay={150}>
+                <TerminalTyper lines={TERMINAL_LINES} />
+              </FadeIn>
+            </div>
+          </section>
+
+          {/* STACK */}
+          <section id="stack">
+            <SectionHeader num="02." title="Tech Stack" />
+            <div className="stack-groups">
+              {STACK.map((g, i) => (
+                <FadeIn key={g.label} delay={i * 80}>
+                  <div className="stack-group">
+                    <div className="stack-group-label">{g.label}</div>
+                    <div className="stack-items">
+                      {g.items.map(item => <span key={item} className="stack-item">{item}</span>)}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* EXPERIÊNCIA */}
+          <section id="experiencia">
+            <SectionHeader num="03." title="Experiência" />
+            <div className="timeline">
+              {EXPERIENCE.map((e, i) => (
+                <FadeIn key={i} delay={i * 100}>
+                  <div className="timeline-item">
+                    <div className="timeline-dot" />
+                    <div className="timeline-period">{e.period}</div>
+                    <div className="timeline-role">{e.role}</div>
+                    <div className="timeline-company">{e.company}</div>
+                    <div className="timeline-desc">{e.desc}</div>
+                    <div className="timeline-tags">
+                      {e.tags.map(t => <span key={t} className="timeline-tag">{t}</span>)}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* PROJETOS */}
+          <section id="projetos">
+            <SectionHeader num="04." title="Projetos" />
+            <div className="projects-grid">
+              {PROJECTS.map((p, i) => (
+                <FadeIn key={i} delay={i * 100}>
+                  <div className="project-card">
+                    <div className="project-card-header">
+                      <span className="project-name">{p.name}</span>
+                      <span className="project-year">{p.year}</span>
+                    </div>
+                    <p className="project-desc">{p.desc}</p>
+                    <div className="project-tags">
+                      {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* CONTATO */}
+          <section id="contato">
+            <SectionHeader num="05." title="Contato" />
+            <div className="contact-inner">
+              <FadeIn>
+                <div className="contact-text">
+                  <h3>Vamos conversar?</h3>
+                  <p>Estou aberto a novas oportunidades, projetos e colaborações. Se quiser trocar uma ideia ou tem um projeto em mente, é só entrar em contato.</p>
+                </div>
+              </FadeIn>
+              <FadeIn delay={150}>
+                <div className="contact-links">
+                  <a className="contact-link" href="mailto:joaovhfs@gmail.com">
+                    <div className="contact-link-icon"><IconMail /></div>
+                    <div>
+                      <div className="contact-link-label">Email</div>
+                      <div className="contact-link-value">joaovhfs@gmail.com</div>
+                    </div>
+                  </a>
+                  <a className="contact-link" href="https://github.com/JoaoVictorGH" target="_blank" rel="noreferrer">
+                    <div className="contact-link-icon"><IconGithub /></div>
+                    <div>
+                      <div className="contact-link-label">GitHub</div>
+                      <div className="contact-link-value">github.com/JoaoVictorGH</div>
+                    </div>
+                  </a>
+                  <a className="contact-link" href="tel:+5534991727865">
+                    <div className="contact-link-icon"><IconPhone /></div>
+                    <div>
+                      <div className="contact-link-label">Telefone</div>
+                      <div className="contact-link-value">(34) 9 9172-7865</div>
+                    </div>
+                  </a>
+                </div>
+              </FadeIn>
+            </div>
+          </section>
+
+          <footer>
+            <p>Desenvolvido por <span>João Victor Fernandes</span></p>
+          </footer>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
