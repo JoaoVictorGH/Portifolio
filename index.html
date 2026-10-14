@@ -321,24 +321,24 @@
     ];
 
     const STACK = [
-      { label: 'FRONTEND',      items: ['Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
-      { label: 'BACKEND',       items: ['PHP','Laravel','Node.js'] },
+      { label: 'FRONTEND',      items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
+      { label: 'BACKEND',       items: ['PHP','Laravel','Node.js','APIs REST'] },
       { label: 'BANCO DE DADOS',items: ['MySQL','SQL'] },
-      { label: 'FERRAMENTAS',   items: ['Postman','REST APIs','ArcGIS','Excel','Git'] },
+      { label: 'FERRAMENTAS',   items: ['Postman','Testes de API','Mentoria técnica','ArcGIS','Excel','Git'] },
     ];
 
     const EXPERIENCE = [
-      { period:'2024 — 2025', role:'Desenvolvedor Fullstack (MEI)', company:'Projetos Próprios',
-        desc:'Desenvolvimento de projetos paralelos como empreendedor individual, incluindo sistema voltado a casas de apostas e plataforma de comércio de produtos.',
-        tags:['Node.js','React','SQL','APIs REST'] },
+      { period:'2024 — 2025', role:'Programador (MEI)', company:'Projetos Independentes',
+        desc:'Desenvolvimento de aplicações web completas para operações comerciais como empreendedor individual, com React no frontend e integração entre interfaces, regras de negócio e persistência de dados.',
+        tags:['React','Node.js','SQL','APIs REST'] },
       { period:'2023 — 2024', role:'Programador', company:'Bravo Logísticas',
-        desc:'Criação e manutenção de telas do sistema interno da empresa. Aprimoramento técnico contínuo via cursos da plataforma Alura.',
+        desc:'Criação e manutenção de telas do sistema interno da empresa, conectando frontend, serviços backend e banco de dados. Aprimoramento técnico contínuo via trilhas da Alura oferecidas pela empresa.',
         tags:['Angular','Node.js','SQL'] },
-      { period:'2018 — 2023', role:'Desenvolvedor Web', company:'Valmont',
-        desc:'Migração da área administrativa para programação. Desenvolvimento e manutenção de sistemas web, criação e manutenção de APIs, testes com Postman e mentoria de estagiários.',
-        tags:['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL'] },
-      { period:'2017 — 2018', role:'Assistente Técnico', company:'Valmont',
-        desc:'Auxílio em trabalhos com utilização do ArcGIS, planilhas em Excel e suporte em plataforma interna.',
+      { period:'2018 — 2023', role:'Desenvolvedor / Assistente Administrativo', company:'Valmont',
+        desc:'Migração da área administrativa para o desenvolvimento de software. Criação e manutenção de sistemas e APIs, testes funcionais e de integração com Postman, e apoio a estagiários desenvolvedores na compreensão do sistema e resolução de dúvidas técnicas.',
+        tags:['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
+      { period:'2017 — 2018', role:'Assistente', company:'Valmont',
+        desc:'Apoio a atividades com ArcGIS, planilhas Excel e plataforma corporativa própria, contribuindo para a organização e continuidade das rotinas.',
         tags:['ArcGIS','Excel'] },
     ];
 
@@ -510,9 +510,9 @@
       { type: 'cmd',       text: 'whoami' },
       { type: 'out-green', text: 'joao-victor-fernandes' },
       { type: 'cmd',       text: 'cat sobre.txt' },
-      { type: 'out',       text: 'Fullstack Dev | +7 anos de experiência' },
+      { type: 'out',       text: 'Fullstack Dev | ~7 anos de experiência' },
       { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI' },
-      { type: 'out',       text: 'PHP · Laravel · Vue · Angular · Node · MySQL' },
+      { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
       { type: 'cmd',       text: 'echo $LANGUAGES' },
       { type: 'out-green', text: 'Português (nativo) · Inglês (B2) · Espanhol (B2)' },
       { type: 'cmd',       text: 'echo "Always learning, always delivering."' },
@@ -523,7 +523,8 @@
     const HERO_TITLES = [
       'Desenvolvedor Fullstack',
       'Criador de APIs robustas',
-      'Vue · Laravel · Node',
+      'React · PHP/Laravel · Node',
+      'Angular · Vue.js',
       'Sempre aprendendo',
     ];
 
@@ -599,8 +600,9 @@
               <h1 className="hero-name">João Victor<br/>Fernandes</h1>
               <HeroTitle />
               <p className="hero-bio">
-                Fullstack com experiência em empresas de médio e grande porte, desenvolvimento de APIs,
-                sistemas de gestão e projetos próprios como MEI. Sempre aprendendo, sempre entregando.
+                Desenvolvedor fullstack com ~7 anos de experiência em React, PHP/Laravel, Node.js, Angular e Vue.js,
+                integrando frontend, backend e banco de dados. Experiência em APIs REST, testes com Postman,
+                manutenção evolutiva e corretiva, e apoio técnico a desenvolvedores em início de carreira.
               </p>
               <div className="hero-cta">
                 <a className="btn btn-primary" href="#projetos">Ver projetos</a>
@@ -617,7 +619,8 @@
               <FadeIn>
                 <div className="about-text">
                   <p>Comecei minha trajetória no Instituto Federal do Triângulo Mineiro com técnico em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.</p>
-                  <p>Trabalhei por anos na Valmont, onde cresci de assistente administrativo a desenvolvedor fullstack, criando e mantendo sistemas reais. Depois, ampliei meu repertório na Bravo Logísticas e dei o passo de empreender como MEI.</p>
+                  <p>Trabalhei por anos na Valmont, onde cresci de assistente administrativo a desenvolvedor fullstack, criando e mantendo sistemas reais, testando APIs com Postman e apoiando estagiários desenvolvedores. Depois, ampliei meu repertório na Bravo Logísticas e dei o passo de empreender como MEI, levando React para as minhas aplicações.</p>
+                  <p>Ao todo, são aproximadamente 7 anos de experiência em desenvolvimento web, com inglês e espanhol intermediário-avançados.</p>
                   <div className="about-langs">
                     <span className="lang-badge">🇧🇷 Português — Nativo</span>
                     <span className="lang-badge">🇺🇸 Inglês — Intermediário Avançado</span>
