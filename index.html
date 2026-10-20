@@ -94,6 +94,23 @@
       background: var(--neon); border-radius: 2px;
     }
 
+    .nav-right { display: flex; align-items: center; gap: 0.85rem; }
+
+    .lang-switch {
+      display: flex; align-items: center; gap: 2px;
+      padding: 2px; border-radius: 7px;
+      border: 0.5px solid var(--border); background: var(--surface);
+    }
+    .lang-btn {
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.55rem; border-radius: 5px;
+      color: var(--muted); background: transparent; border: none; cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active { color: #000; background: var(--neon); }
+
     .nav-cta {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 0.45rem 1rem;
@@ -230,13 +247,6 @@
     /* ── ABOUT ── */
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
     .about-text p { color: var(--muted); margin-bottom: 1rem; line-height: 1.8; }
-    .about-photo-placeholder {
-      aspect-ratio: 1; max-width: 320px; border-radius: 12px;
-      background: var(--surface2);
-      border: 1px dashed rgba(57,255,20,0.3);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.75rem; color: var(--muted); font-size: 0.875rem;
-    }
     .about-photo {
       aspect-ratio: 1; width: 160px; border-radius: 50%;
       border: 2px solid var(--neon-mid);
@@ -326,55 +336,253 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
+    const { useState, useEffect, useRef, useContext, createContext } = React;
 
-    /* ── DATA ── */
-    const NAV_ITEMS = [
-      { num: '01', label: 'Sobre',      href: '#sobre' },
-      { num: '02', label: 'Stack',      href: '#stack' },
-      { num: '03', label: 'Exp.',       href: '#experiencia' },
-      { num: '04', label: 'Projetos',   href: '#projetos' },
-      { num: '05', label: 'Contato',    href: '#contato' },
+    /* ── I18N ── */
+    const I18N = {
+      pt: {
+        metaTitle: 'João Victor | Desenvolvedor Fullstack',
+        htmlLang: 'pt-BR',
+        nav: { items: [
+          { num: '01', label: 'Sobre',    href: '#sobre' },
+          { num: '02', label: 'Stack',    href: '#stack' },
+          { num: '03', label: 'Exp.',     href: '#experiencia' },
+          { num: '04', label: 'Projetos', href: '#projetos' },
+          { num: '05', label: 'Contato',  href: '#contato' },
+        ], cta: 'Contato' },
+        hero: {
+          tag: 'Disponível para novas oportunidades',
+          titles: ['Desenvolvedor Fullstack','Criador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Sempre aprendendo'],
+          bio: 'Desenvolvedor fullstack com ~7 anos de experiência em React, PHP/Laravel, Node.js, Angular e Vue.js, integrando frontend, backend e banco de dados. Experiência em APIs REST, testes com Postman, manutenção evolutiva e corretiva, e apoio técnico a desenvolvedores em início de carreira.',
+          ctaPrimary: 'Ver projetos', ctaSecondary: 'Entre em contato',
+          cvLabel: 'Currículo:', scroll: 'scroll',
+        },
+        sections: { sobre: 'Sobre mim', stack: 'Tech Stack', experiencia: 'Experiência', projetos: 'Projetos', contato: 'Contato' },
+        about: {
+          paragraphs: [
+            'Comecei minha trajetória no Instituto Federal do Triângulo Mineiro com técnico em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.',
+            'Trabalhei por anos na Valmont, onde cresci de assistente administrativo a desenvolvedor fullstack, criando e mantendo sistemas reais, testando APIs com Postman e apoiando estagiários desenvolvedores. Depois, ampliei meu repertório na Bravo Logísticas e dei o passo de empreender como MEI, levando React para as minhas aplicações.',
+            'Ao todo, são aproximadamente 7 anos de experiência em desenvolvimento web, com inglês e espanhol intermediário-avançados.',
+          ],
+          langs: ['🇧🇷 Português — Nativo', '🇺🇸 Inglês — Intermediário Avançado', '🇪🇸 Espanhol — Intermediário Avançado'],
+        },
+        stack: [
+          { label: 'FRONTEND',       items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
+          { label: 'BACKEND',        items: ['PHP','Laravel','Node.js','APIs REST'] },
+          { label: 'BANCO DE DADOS', items: ['MySQL','SQL'] },
+          { label: 'FERRAMENTAS',    items: ['Postman','Testes de API','Mentoria técnica','ArcGIS','Excel','Git'] },
+        ],
+        experience: [
+          { period: '2024 — 2025', role: 'Programador (MEI)', company: 'Projetos Independentes',
+            desc: 'Desenvolvimento de aplicações web completas para operações comerciais como empreendedor individual, com React no frontend e integração entre interfaces, regras de negócio e persistência de dados.',
+            tags: ['React','Node.js','SQL','APIs REST'] },
+          { period: '2023 — 2024', role: 'Programador', company: 'Bravo Logísticas',
+            desc: 'Criação e manutenção de telas do sistema interno da empresa, conectando frontend, serviços backend e banco de dados. Aprimoramento técnico contínuo via trilhas da Alura oferecidas pela empresa.',
+            tags: ['Angular','Node.js','SQL'] },
+          { period: '2018 — 2023', role: 'Desenvolvedor / Assistente Administrativo', company: 'Valmont',
+            desc: 'Migração da área administrativa para o desenvolvimento de software. Criação e manutenção de sistemas e APIs, testes funcionais e de integração com Postman, e apoio a estagiários desenvolvedores na compreensão do sistema e resolução de dúvidas técnicas.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
+          { period: '2017 — 2018', role: 'Assistente', company: 'Valmont',
+            desc: 'Apoio a atividades com ArcGIS, planilhas Excel e plataforma corporativa própria, contribuindo para a organização e continuidade das rotinas.',
+            tags: ['ArcGIS','Excel'] },
+        ],
+        projects: [
+          { name: 'Plataforma de Apostas', year: '2024',
+            desc: 'Sistema completo voltado a casas de apostas, com gestão de usuários, transações e painéis administrativos.',
+            tags: ['Fullstack','Node.js','SQL','REST API'] },
+          { name: 'E-commerce de Produtos', year: '2024',
+            desc: 'Plataforma de comércio eletrônico com catálogo de produtos, carrinho e fluxo de pedidos.',
+            tags: ['Fullstack','Node.js','SQL'] },
+          { name: 'Sistema de Gestão Interna', year: '2018–2023',
+            desc: 'Desenvolvimento e manutenção de módulos de sistema ERP interno na Valmont, incluindo APIs integradas.',
+            tags: ['PHP','Laravel','Vue.js','MySQL'] },
+        ],
+        terminal: [
+          { type: 'cmd',       text: 'whoami' },
+          { type: 'out-green', text: 'joao-victor-fernandes' },
+          { type: 'cmd',       text: 'cat sobre.txt' },
+          { type: 'out',       text: 'Fullstack Dev | ~7 anos de experiência' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI' },
+          { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
+          { type: 'cmd',       text: 'echo $LANGUAGES' },
+          { type: 'out-green', text: 'Português (nativo) · Inglês (B2) · Espanhol (B2)' },
+          { type: 'cmd',       text: 'echo "Sempre aprendendo, sempre entregando."' },
+          { type: 'out-green', text: 'Sempre aprendendo, sempre entregando.' },
+        ],
+        contact: {
+          heading: 'Vamos conversar?',
+          text: 'Estou aberto a novas oportunidades, projetos e colaborações. Se quiser trocar uma ideia ou tem um projeto em mente, é só entrar em contato.',
+          email: 'Email', github: 'GitHub', linkedin: 'LinkedIn', whatsapp: 'WhatsApp',
+        },
+        footer: 'Desenvolvido por',
+      },
+      en: {
+        metaTitle: 'João Victor | Fullstack Developer',
+        htmlLang: 'en',
+        nav: { items: [
+          { num: '01', label: 'About',    href: '#sobre' },
+          { num: '02', label: 'Stack',    href: '#stack' },
+          { num: '03', label: 'Exp.',     href: '#experiencia' },
+          { num: '04', label: 'Projects', href: '#projetos' },
+          { num: '05', label: 'Contact',  href: '#contato' },
+        ], cta: 'Contact' },
+        hero: {
+          tag: 'Available for new opportunities',
+          titles: ['Fullstack Developer','Builder of robust APIs','React · PHP/Laravel · Node','Angular · Vue.js','Always learning'],
+          bio: 'Full-stack developer with ~7 years of experience in React, PHP/Laravel, Node.js, Angular, and Vue.js, integrating frontend, backend, and databases. Experienced in REST APIs, API testing with Postman, corrective and evolutionary maintenance, and technical support for junior developers.',
+          ctaPrimary: 'View projects', ctaSecondary: 'Get in touch',
+          cvLabel: 'Resume:', scroll: 'scroll',
+        },
+        sections: { sobre: 'About me', stack: 'Tech Stack', experiencia: 'Experience', projetos: 'Projects', contato: 'Contact' },
+        about: {
+          paragraphs: [
+            'I started my journey at Instituto Federal do Triângulo Mineiro with a technical program in IT Support and Maintenance. From there, I naturally moved into software development — and that’s where I found my calling.',
+            'I spent years at Valmont, growing from administrative assistant to full-stack developer, building and maintaining real systems, testing APIs with Postman, and mentoring junior developers. Later, I broadened my experience at Bravo Logísticas and took the leap into entrepreneurship as a self-employed developer, bringing React into my projects.',
+            'All together, that’s approximately 7 years of experience in web development, with intermediate-to-advanced English and Spanish.',
+          ],
+          langs: ['🇧🇷 Portuguese — Native', '🇺🇸 English — Intermediate-Advanced', '🇪🇸 Spanish — Intermediate-Advanced'],
+        },
+        stack: [
+          { label: 'FRONTEND',  items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
+          { label: 'BACKEND',   items: ['PHP','Laravel','Node.js','REST APIs'] },
+          { label: 'DATABASE',  items: ['MySQL','SQL'] },
+          { label: 'TOOLS',     items: ['Postman','API Testing','Technical Mentoring','ArcGIS','Excel','Git'] },
+        ],
+        experience: [
+          { period: '2024 — 2025', role: 'Programmer (Self-employed)', company: 'Independent Projects',
+            desc: 'Developed complete web applications for business operations as a self-employed developer, using React on the frontend and integrating interfaces, business logic, and data persistence.',
+            tags: ['React','Node.js','SQL','REST APIs'] },
+          { period: '2023 — 2024', role: 'Programmer', company: 'Bravo Logísticas',
+            desc: 'Created and maintained internal system screens, connecting frontend, backend services, and databases. Continuously expanded technical skills through Alura learning tracks provided by the company.',
+            tags: ['Angular','Node.js','SQL'] },
+          { period: '2018 — 2023', role: 'Developer / Administrative Assistant', company: 'Valmont',
+            desc: 'Transitioned from an administrative role into software development. Created and maintained systems and APIs, performed functional and integration testing with Postman, and supported junior developer interns in understanding the system and resolving technical questions.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
+          { period: '2017 — 2018', role: 'Assistant', company: 'Valmont',
+            desc: 'Supported activities involving ArcGIS, Excel spreadsheets, and the company’s own corporate platform, contributing to the organization and continuity of operational routines.',
+            tags: ['ArcGIS','Excel'] },
+        ],
+        projects: [
+          { name: 'Betting Platform', year: '2024',
+            desc: 'Complete platform for betting operations, with user management, transactions, and admin dashboards.',
+            tags: ['Fullstack','Node.js','SQL','REST API'] },
+          { name: 'E-commerce Platform', year: '2024',
+            desc: 'Online store with product catalog, shopping cart, and order flow.',
+            tags: ['Fullstack','Node.js','SQL'] },
+          { name: 'Internal Management System', year: '2018–2023',
+            desc: 'Development and maintenance of internal ERP system modules at Valmont, including integrated APIs.',
+            tags: ['PHP','Laravel','Vue.js','MySQL'] },
+        ],
+        terminal: [
+          { type: 'cmd',       text: 'whoami' },
+          { type: 'out-green', text: 'joao-victor-fernandes' },
+          { type: 'cmd',       text: 'cat about.txt' },
+          { type: 'out',       text: 'Fullstack Dev | ~7 years of experience' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → Self-employed' },
+          { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
+          { type: 'cmd',       text: 'echo $LANGUAGES' },
+          { type: 'out-green', text: 'Portuguese (native) · English (B2) · Spanish (B2)' },
+          { type: 'cmd',       text: 'echo "Always learning, always delivering."' },
+          { type: 'out-green', text: 'Always learning, always delivering.' },
+        ],
+        contact: {
+          heading: 'Let’s talk?',
+          text: 'I’m open to new opportunities, projects, and collaborations. If you’d like to chat or have a project in mind, feel free to reach out.',
+          email: 'Email', github: 'GitHub', linkedin: 'LinkedIn', whatsapp: 'WhatsApp',
+        },
+        footer: 'Built by',
+      },
+      es: {
+        metaTitle: 'João Victor | Desarrollador Full Stack',
+        htmlLang: 'es',
+        nav: { items: [
+          { num: '01', label: 'Sobre',     href: '#sobre' },
+          { num: '02', label: 'Stack',     href: '#stack' },
+          { num: '03', label: 'Exp.',      href: '#experiencia' },
+          { num: '04', label: 'Proyectos', href: '#projetos' },
+          { num: '05', label: 'Contacto',  href: '#contato' },
+        ], cta: 'Contacto' },
+        hero: {
+          tag: 'Disponible para nuevas oportunidades',
+          titles: ['Desarrollador Full Stack','Creador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Siempre aprendiendo'],
+          bio: 'Desarrollador full stack con ~7 años de experiencia en React, PHP/Laravel, Node.js, Angular y Vue.js, integrando frontend, backend y bases de datos. Experiencia en API REST, pruebas con Postman, mantenimiento correctivo y evolutivo, y apoyo técnico a desarrolladores junior.',
+          ctaPrimary: 'Ver proyectos', ctaSecondary: 'Hablemos',
+          cvLabel: 'Currículum:', scroll: 'scroll',
+        },
+        sections: { sobre: 'Sobre mí', stack: 'Tech Stack', experiencia: 'Experiencia', projetos: 'Proyectos', contato: 'Contacto' },
+        about: {
+          paragraphs: [
+            'Comencé mi trayectoria en el Instituto Federal do Triângulo Mineiro con la formación técnica en Soporte y Mantenimiento Informático. Desde el área técnica, migré naturalmente al desarrollo de software — y ahí encontré mi vocación.',
+            'Trabajé durante años en Valmont, donde crecí de asistente administrativo a desarrollador full stack, creando y manteniendo sistemas reales, probando APIs con Postman y apoyando a desarrolladores becarios. Después, amplié mi experiencia en Bravo Logísticas y di el paso de emprender como autónomo, llevando React a mis aplicaciones.',
+            'En total, son aproximadamente 7 años de experiencia en desarrollo web, con inglés y español de nivel intermedio-avanzado.',
+          ],
+          langs: ['🇧🇷 Portugués — Nativo', '🇺🇸 Inglés — Intermedio-Avanzado', '🇪🇸 Español — Intermedio-Avanzado'],
+        },
+        stack: [
+          { label: 'FRONTEND',        items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
+          { label: 'BACKEND',         items: ['PHP','Laravel','Node.js','API REST'] },
+          { label: 'BASE DE DATOS',   items: ['MySQL','SQL'] },
+          { label: 'HERRAMIENTAS',    items: ['Postman','Pruebas de API','Mentoría técnica','ArcGIS','Excel','Git'] },
+        ],
+        experience: [
+          { period: '2024 — 2025', role: 'Programador (Autónomo)', company: 'Proyectos Independientes',
+            desc: 'Desarrolló aplicaciones web completas para operaciones comerciales como desarrollador autónomo, utilizando React en el frontend e integrando interfaces, reglas de negocio y persistencia de datos.',
+            tags: ['React','Node.js','SQL','API REST'] },
+          { period: '2023 — 2024', role: 'Programador', company: 'Bravo Logísticas',
+            desc: 'Creó y mantuvo pantallas del sistema interno, conectando frontend, servicios backend y bases de datos. Amplió continuamente sus conocimientos técnicos mediante itinerarios formativos de Alura ofrecidos por la empresa.',
+            tags: ['Angular','Node.js','SQL'] },
+          { period: '2018 — 2023', role: 'Desarrollador / Asistente Administrativo', company: 'Valmont',
+            desc: 'Pasó de una función administrativa al desarrollo de software. Creó y mantuvo sistemas y API, realizó pruebas funcionales y de integración con Postman, y apoyó a becarios de desarrollo en la comprensión del sistema y la resolución de dudas técnicas.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
+          { period: '2017 — 2018', role: 'Asistente', company: 'Valmont',
+            desc: 'Apoyó actividades con ArcGIS, hojas de cálculo de Excel y la plataforma corporativa propia de la empresa, contribuyendo a la organización y continuidad de las rutinas operativas.',
+            tags: ['ArcGIS','Excel'] },
+        ],
+        projects: [
+          { name: 'Plataforma de Apuestas', year: '2024',
+            desc: 'Sistema completo para casas de apuestas, con gestión de usuarios, transacciones y paneles administrativos.',
+            tags: ['Fullstack','Node.js','SQL','REST API'] },
+          { name: 'E-commerce de Productos', year: '2024',
+            desc: 'Plataforma de comercio electrónico con catálogo de productos, carrito y flujo de pedidos.',
+            tags: ['Fullstack','Node.js','SQL'] },
+          { name: 'Sistema de Gestión Interna', year: '2018–2023',
+            desc: 'Desarrollo y mantenimiento de módulos del sistema ERP interno en Valmont, incluyendo APIs integradas.',
+            tags: ['PHP','Laravel','Vue.js','MySQL'] },
+        ],
+        terminal: [
+          { type: 'cmd',       text: 'whoami' },
+          { type: 'out-green', text: 'joao-victor-fernandes' },
+          { type: 'cmd',       text: 'cat sobre.txt' },
+          { type: 'out',       text: 'Full Stack Dev | ~7 años de experiencia' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → Autónomo' },
+          { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
+          { type: 'cmd',       text: 'echo $LANGUAGES' },
+          { type: 'out-green', text: 'Portugués (nativo) · Inglés (B2) · Español (B2)' },
+          { type: 'cmd',       text: 'echo "Siempre aprendiendo, siempre entregando."' },
+          { type: 'out-green', text: 'Siempre aprendiendo, siempre entregando.' },
+        ],
+        contact: {
+          heading: '¿Hablamos?',
+          text: 'Estoy abierto a nuevas oportunidades, proyectos y colaboraciones. Si quieres intercambiar ideas o tienes un proyecto en mente, no dudes en contactarme.',
+          email: 'Email', github: 'GitHub', linkedin: 'LinkedIn', whatsapp: 'WhatsApp',
+        },
+        footer: 'Desarrollado por',
+      },
+    };
+
+    const LANGS = [
+      { code: 'pt', label: 'PT' },
+      { code: 'en', label: 'EN' },
+      { code: 'es', label: 'ES' },
     ];
 
-    const STACK = [
-      { label: 'FRONTEND',      items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
-      { label: 'BACKEND',       items: ['PHP','Laravel','Node.js','APIs REST'] },
-      { label: 'BANCO DE DADOS',items: ['MySQL','SQL'] },
-      { label: 'FERRAMENTAS',   items: ['Postman','Testes de API','Mentoria técnica','ArcGIS','Excel','Git'] },
-    ];
-
-    const EXPERIENCE = [
-      { period:'2024 — 2025', role:'Programador (MEI)', company:'Projetos Independentes',
-        desc:'Desenvolvimento de aplicações web completas para operações comerciais como empreendedor individual, com React no frontend e integração entre interfaces, regras de negócio e persistência de dados.',
-        tags:['React','Node.js','SQL','APIs REST'] },
-      { period:'2023 — 2024', role:'Programador', company:'Bravo Logísticas',
-        desc:'Criação e manutenção de telas do sistema interno da empresa, conectando frontend, serviços backend e banco de dados. Aprimoramento técnico contínuo via trilhas da Alura oferecidas pela empresa.',
-        tags:['Angular','Node.js','SQL'] },
-      { period:'2018 — 2023', role:'Desenvolvedor / Assistente Administrativo', company:'Valmont',
-        desc:'Migração da área administrativa para o desenvolvimento de software. Criação e manutenção de sistemas e APIs, testes funcionais e de integração com Postman, e apoio a estagiários desenvolvedores na compreensão do sistema e resolução de dúvidas técnicas.',
-        tags:['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
-      { period:'2017 — 2018', role:'Assistente', company:'Valmont',
-        desc:'Apoio a atividades com ArcGIS, planilhas Excel e plataforma corporativa própria, contribuindo para a organização e continuidade das rotinas.',
-        tags:['ArcGIS','Excel'] },
-    ];
+    const LangContext = createContext({ lang: 'pt', setLang: () => {} });
+    function useLang() { return useContext(LangContext); }
 
     const CV_FILES = [
       { lang: 'pt', label: 'PT-BR', href: 'cv/Curriculo_Joao_Victor_PT_BR.pdf' },
       { lang: 'en', label: 'EN',    href: 'cv/Resume_Joao_Victor_EN.pdf' },
       { lang: 'es', label: 'ES',    href: 'cv/CV_Joao_Victor_ES.pdf' },
-    ];
-
-    const PROJECTS = [
-      { name:'Plataforma de Apostas', year:'2024',
-        desc:'Sistema completo voltado a casas de apostas, com gestão de usuários, transações e painéis administrativos.',
-        tags:['Fullstack','Node.js','SQL','REST API'] },
-      { name:'E-commerce de Produtos', year:'2024',
-        desc:'Plataforma de comércio eletrônico com catálogo de produtos, carrinho e fluxo de pedidos.',
-        tags:['Fullstack','Node.js','SQL'] },
-      { name:'Sistema de Gestão Interna', year:'2018–2023',
-        desc:'Desenvolvimento e manutenção de módulos de sistema ERP interno na Valmont, incluindo APIs integradas.',
-        tags:['PHP','Laravel','Vue.js','MySQL'] },
     ];
 
     /* ── TYPEWRITER HOOK ── */
@@ -517,11 +725,6 @@
         <path d="M9 18c-4.51 2-5-2-7-2"/>
       </svg>
     );
-    const IconPhone = () => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6.1 6.1l.95-.94a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.82 16.92z"/>
-      </svg>
-    );
     const IconArrow = () => (
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -547,35 +750,13 @@
       </svg>
     );
 
-    /* ── TERMINAL LINES DATA ── */
-    const TERMINAL_LINES = [
-      { type: 'cmd',       text: 'whoami' },
-      { type: 'out-green', text: 'joao-victor-fernandes' },
-      { type: 'cmd',       text: 'cat sobre.txt' },
-      { type: 'out',       text: 'Fullstack Dev | ~7 anos de experiência' },
-      { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI' },
-      { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
-      { type: 'cmd',       text: 'echo $LANGUAGES' },
-      { type: 'out-green', text: 'Português (nativo) · Inglês (B2) · Espanhol (B2)' },
-      { type: 'cmd',       text: 'echo "Always learning, always delivering."' },
-      { type: 'out-green', text: 'Always learning, always delivering.' },
-    ];
-
     /* ── HERO TITLE rotator ── */
-    const HERO_TITLES = [
-      'Desenvolvedor Fullstack',
-      'Criador de APIs robustas',
-      'React · PHP/Laravel · Node',
-      'Angular · Vue.js',
-      'Sempre aprendendo',
-    ];
-
-    function HeroTitle() {
+    function HeroTitle({ titles }) {
       const [idx, setIdx] = useState(0);
-      const { displayed, done } = useTypewriter(HERO_TITLES[idx], 50, 400);
+      const { displayed, done } = useTypewriter(titles[idx], 50, 400);
       useEffect(() => {
         if (!done) return;
-        const t = setTimeout(() => setIdx(i => (i + 1) % HERO_TITLES.length), 1800);
+        const t = setTimeout(() => setIdx(i => (i + 1) % titles.length), 1800);
         return () => clearTimeout(t);
       }, [done, idx]);
       return (
@@ -586,8 +767,31 @@
       );
     }
 
+    /* ── LANGUAGE SWITCH ── */
+    function LangSwitch() {
+      const { lang, setLang } = useLang();
+      return (
+        <div className="lang-switch">
+          {LANGS.map(l => (
+            <button
+              key={l.code}
+              type="button"
+              className={'lang-btn' + (lang === l.code ? ' active' : '')}
+              onClick={() => setLang(l.code)}
+              aria-label={'Switch language to ' + l.label}
+              aria-pressed={lang === l.code}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+      );
+    }
+
     /* ── NAV ── */
     function Nav() {
+      const { lang } = useLang();
+      const t = I18N[lang];
       const [scrolled, setScrolled] = useState(false);
       const [active, setActive] = useState('');
 
@@ -610,7 +814,7 @@
         <nav className={scrolled ? 'scrolled' : ''}>
           <div className="nav-logo">&lt;JV /&gt;</div>
           <ul className="nav-links">
-            {NAV_ITEMS.map(item => (
+            {t.nav.items.map(item => (
               <li key={item.href}>
                 <a href={item.href} className={active === item.href ? 'active' : ''}>
                   <span className="nav-num">{item.num}.</span>
@@ -619,17 +823,40 @@
               </li>
             ))}
           </ul>
-          <a className="nav-cta" href="https://wa.me/5534991727865" target="_blank" rel="noreferrer">
-            Contato <IconArrow />
-          </a>
+          <div className="nav-right">
+            <LangSwitch />
+            <a className="nav-cta" href="https://wa.me/5534991727865" target="_blank" rel="noreferrer">
+              {t.nav.cta} <IconArrow />
+            </a>
+          </div>
         </nav>
       );
     }
 
     /* ── APP ── */
     function App() {
+      const [lang, setLangState] = useState(() => {
+        try {
+          const saved = window.localStorage.getItem('portfolio-lang');
+          if (saved && I18N[saved]) return saved;
+        } catch (e) {}
+        return 'pt';
+      });
+
+      const setLang = (next) => {
+        setLangState(next);
+        try { window.localStorage.setItem('portfolio-lang', next); } catch (e) {}
+      };
+
+      const t = I18N[lang];
+
+      useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.metaTitle;
+      }, [lang]);
+
       return (
-        <>
+        <LangContext.Provider value={{ lang, setLang }}>
           <Nav />
 
           {/* HERO */}
@@ -637,21 +864,17 @@
             <section id="hero">
               <div className="hero-tag">
                 <span className="hero-tag-dot" />
-                // Disponível para novas oportunidades
+                // {t.hero.tag}
               </div>
               <h1 className="hero-name">João Victor<br/>Fernandes</h1>
-              <HeroTitle />
-              <p className="hero-bio">
-                Desenvolvedor fullstack com ~7 anos de experiência em React, PHP/Laravel, Node.js, Angular e Vue.js,
-                integrando frontend, backend e banco de dados. Experiência em APIs REST, testes com Postman,
-                manutenção evolutiva e corretiva, e apoio técnico a desenvolvedores em início de carreira.
-              </p>
+              <HeroTitle key={lang} titles={t.hero.titles} />
+              <p className="hero-bio">{t.hero.bio}</p>
               <div className="hero-cta">
-                <a className="btn btn-primary" href="#projetos">Ver projetos</a>
-                <a className="btn btn-outline" href="#contato">Entre em contato</a>
+                <a className="btn btn-primary" href="#projetos">{t.hero.ctaPrimary}</a>
+                <a className="btn btn-outline" href="#contato">{t.hero.ctaSecondary}</a>
               </div>
               <div className="cv-row">
-                <span className="cv-row-label">Currículo:</span>
+                <span className="cv-row-label">{t.hero.cvLabel}</span>
                 {CV_FILES.map(cv => (
                   <a key={cv.lang} className="cv-chip" href={cv.href} download>
                     <IconDownload /> {cv.label}
@@ -659,37 +882,33 @@
                 ))}
               </div>
             </section>
-            <div className="hero-scroll"><div className="scroll-line" />scroll</div>
+            <div className="hero-scroll"><div className="scroll-line" />{t.hero.scroll}</div>
           </div>
 
           {/* SOBRE */}
           <section id="sobre">
-            <SectionHeader num="01." title="Sobre mim" />
+            <SectionHeader key={'sobre-' + lang} num="01." title={t.sections.sobre} />
             <div className="about-grid">
               <FadeIn>
                 <div className="about-text">
                   <img className="about-photo" src="profile.jpg" alt="Foto de João Victor Fernandes" />
-                  <p>Comecei minha trajetória no Instituto Federal do Triângulo Mineiro com técnico em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.</p>
-                  <p>Trabalhei por anos na Valmont, onde cresci de assistente administrativo a desenvolvedor fullstack, criando e mantendo sistemas reais, testando APIs com Postman e apoiando estagiários desenvolvedores. Depois, ampliei meu repertório na Bravo Logísticas e dei o passo de empreender como MEI, levando React para as minhas aplicações.</p>
-                  <p>Ao todo, são aproximadamente 7 anos de experiência em desenvolvimento web, com inglês e espanhol intermediário-avançados.</p>
+                  {t.about.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
                   <div className="about-langs">
-                    <span className="lang-badge">🇧🇷 Português — Nativo</span>
-                    <span className="lang-badge">🇺🇸 Inglês — Intermediário Avançado</span>
-                    <span className="lang-badge">🇪🇸 Espanhol — Intermediário Avançado</span>
+                    {t.about.langs.map((l, i) => <span key={i} className="lang-badge">{l}</span>)}
                   </div>
                 </div>
               </FadeIn>
               <FadeIn delay={150}>
-                <TerminalTyper lines={TERMINAL_LINES} />
+                <TerminalTyper key={lang} lines={t.terminal} />
               </FadeIn>
             </div>
           </section>
 
           {/* STACK */}
           <section id="stack">
-            <SectionHeader num="02." title="Tech Stack" />
+            <SectionHeader key={'stack-' + lang} num="02." title={t.sections.stack} />
             <div className="stack-groups">
-              {STACK.map((g, i) => (
+              {t.stack.map((g, i) => (
                 <FadeIn key={g.label} delay={i * 80}>
                   <div className="stack-group">
                     <div className="stack-group-label">{g.label}</div>
@@ -704,9 +923,9 @@
 
           {/* EXPERIÊNCIA */}
           <section id="experiencia">
-            <SectionHeader num="03." title="Experiência" />
+            <SectionHeader key={'exp-' + lang} num="03." title={t.sections.experiencia} />
             <div className="timeline">
-              {EXPERIENCE.map((e, i) => (
+              {t.experience.map((e, i) => (
                 <FadeIn key={i} delay={i * 100}>
                   <div className="timeline-item">
                     <div className="timeline-dot" />
@@ -715,7 +934,7 @@
                     <div className="timeline-company">{e.company}</div>
                     <div className="timeline-desc">{e.desc}</div>
                     <div className="timeline-tags">
-                      {e.tags.map(t => <span key={t} className="timeline-tag">{t}</span>)}
+                      {e.tags.map(tg => <span key={tg} className="timeline-tag">{tg}</span>)}
                     </div>
                   </div>
                 </FadeIn>
@@ -725,9 +944,9 @@
 
           {/* PROJETOS */}
           <section id="projetos">
-            <SectionHeader num="04." title="Projetos" />
+            <SectionHeader key={'proj-' + lang} num="04." title={t.sections.projetos} />
             <div className="projects-grid">
-              {PROJECTS.map((p, i) => (
+              {t.projects.map((p, i) => (
                 <FadeIn key={i} delay={i * 100}>
                   <div className="project-card">
                     <div className="project-card-header">
@@ -736,7 +955,7 @@
                     </div>
                     <p className="project-desc">{p.desc}</p>
                     <div className="project-tags">
-                      {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
+                      {p.tags.map(tg => <span key={tg} className="project-tag">{tg}</span>)}
                     </div>
                   </div>
                 </FadeIn>
@@ -746,12 +965,12 @@
 
           {/* CONTATO */}
           <section id="contato">
-            <SectionHeader num="05." title="Contato" />
+            <SectionHeader key={'contato-' + lang} num="05." title={t.sections.contato} />
             <div className="contact-inner">
               <FadeIn>
                 <div className="contact-text">
-                  <h3>Vamos conversar?</h3>
-                  <p>Estou aberto a novas oportunidades, projetos e colaborações. Se quiser trocar uma ideia ou tem um projeto em mente, é só entrar em contato.</p>
+                  <h3>{t.contact.heading}</h3>
+                  <p>{t.contact.text}</p>
                 </div>
               </FadeIn>
               <FadeIn delay={150}>
@@ -759,28 +978,28 @@
                   <a className="contact-link" href="mailto:joaovhfs@gmail.com">
                     <div className="contact-link-icon"><IconMail /></div>
                     <div>
-                      <div className="contact-link-label">Email</div>
+                      <div className="contact-link-label">{t.contact.email}</div>
                       <div className="contact-link-value">joaovhfs@gmail.com</div>
                     </div>
                   </a>
                   <a className="contact-link" href="https://github.com/JoaoVictorGH" target="_blank" rel="noreferrer">
                     <div className="contact-link-icon"><IconGithub /></div>
                     <div>
-                      <div className="contact-link-label">GitHub</div>
+                      <div className="contact-link-label">{t.contact.github}</div>
                       <div className="contact-link-value">github.com/JoaoVictorGH</div>
                     </div>
                   </a>
                   <a className="contact-link" href="https://www.linkedin.com/in/joao-victor-hermogenes-fernandes-e-silva-92aa8b225/" target="_blank" rel="noreferrer">
                     <div className="contact-link-icon"><IconLinkedin /></div>
                     <div>
-                      <div className="contact-link-label">LinkedIn</div>
+                      <div className="contact-link-label">{t.contact.linkedin}</div>
                       <div className="contact-link-value">João Victor H. Fernandes e Silva</div>
                     </div>
                   </a>
                   <a className="contact-link" href="https://wa.me/5534991727865" target="_blank" rel="noreferrer">
                     <div className="contact-link-icon"><IconWhatsapp /></div>
                     <div>
-                      <div className="contact-link-label">WhatsApp</div>
+                      <div className="contact-link-label">{t.contact.whatsapp}</div>
                       <div className="contact-link-value">(34) 9 9172-7865</div>
                     </div>
                   </a>
@@ -790,9 +1009,9 @@
           </section>
 
           <footer>
-            <p>Desenvolvido por <span>João Victor Fernandes</span></p>
+            <p>{t.footer} <span>João Victor Fernandes</span></p>
           </footer>
-        </>
+        </LangContext.Provider>
       );
     }
 
