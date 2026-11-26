@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="João Victor Hermogenes Fernandes e Silva — Desenvolvedor Full Stack. Uberaba–MG. Disponível para trabalho remoto." />
+  <meta property="og:title" content="João Victor | Desenvolvedor Full Stack" />
+  <meta property="og:description" content="Portfólio de João Victor Hermogenes Fernandes e Silva, desenvolvedor full stack." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="profile.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>" />
+  <title>João Victor | Desenvolvedor Full Stack</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --neon: #39ff14;
+      --neon-dim: rgba(57,255,20,0.12);
+      --neon-mid: rgba(57,255,20,0.35);
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #181818;
+      --border: rgba(255,255,255,0.08);
+      --text: #e8e8e8;
+      --muted: #888;
+      --font: 'Inter', sans-serif;
+      --mono: 'Fira Code', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+    ::selection { background: var(--neon-dim); color: var(--neon); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--neon-mid); border-radius: 2px; }
+    a { color: var(--neon); text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 5%; height: 64px;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 0.5px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(57,255,20,0.06); }
+
+    .nav-logo {
+      font-family: var(--mono); font-size: 1.05rem;
+      color: var(--neon); letter-spacing: 0.05em;
+      position: relative; cursor: default;
+    }
+    .nav-logo::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--neon);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-logo:hover::after { transform: scaleX(1); }
+
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a {
+      display: flex; align-items: center; gap: 5px;
+      padding: 0.45rem 0.9rem;
+      color: var(--muted); font-size: 0.82rem; letter-spacing: 0.06em;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .nav-links a .nav-num {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--neon); opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .nav-links a::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--neon-dim);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+      border-radius: 6px;
+    }
+    .nav-links a:hover { color: var(--neon); }
+    .nav-links a:hover::before { transform: scaleX(1); }
+    .nav-links a:hover .nav-num { opacity: 1; }
+    .nav-links a.active { color: var(--neon); }
+    .nav-links a.active .nav-num { opacity: 1; }
+    /* active underline pill */
+    .nav-links a.active::after {
+      content: '';
+      position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 2px;
+      background: var(--neon); border-radius: 2px;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 0.85rem; }
+
+    .lang-switch {
+      display: flex; align-items: center; gap: 2px;
+      padding: 2px; border-radius: 7px;
+      border: 0.5px solid var(--border); background: var(--surface);
+    }
+    .lang-btn {
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.55rem; border-radius: 5px;
+      color: var(--muted); background: transparent; border: none; cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active { color: #000; background: var(--neon); }
+
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0.45rem 1rem;
+      font-size: 0.8rem; font-weight: 500; font-family: var(--font);
+      color: var(--neon);
+      border: 0.5px solid var(--neon-mid); border-radius: 6px;
+      background: transparent; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover {
+      background: var(--neon-dim);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(57,255,20,0.15);
+    }
+    .nav-cta svg { transition: transform 0.2s; }
+    .nav-cta:hover svg { transform: translateX(2px); }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 5%; max-width: 1100px; margin: 0 auto; }
+
+    /* ── HERO ── */
+    .hero-wrap {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 0 5%; padding-top: 5rem;
+    }
+    #hero { padding: 0; max-width: 1100px; width: 100%; }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 0.82rem;
+      color: var(--neon); letter-spacing: 0.12em;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--neon);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(57,255,20,0.5); }
+      50% { box-shadow: 0 0 0 6px rgba(57,255,20,0); }
+    }
+
+    .hero-name {
+      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700;
+      line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+    .hero-title {
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 300;
+      color: var(--muted); margin-bottom: 1.5rem;
+      min-height: 2em;
+    }
+    .hero-title .typed-highlight { color: var(--neon); font-weight: 500; }
+    .cursor {
+      display: inline-block; width: 2px; height: 1.1em;
+      background: var(--neon); margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-bio {
+      max-width: 600px; color: var(--muted);
+      font-size: 1rem; margin-bottom: 2.5rem; line-height: 1.8;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.75rem; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 500; cursor: pointer;
+      transition: all 0.2s; border: none; font-family: var(--font);
+    }
+    .btn-primary { background: var(--neon); color: #000; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(57,255,20,0.25); }
+    .btn-outline { background: transparent; color: var(--neon); border: 1px solid var(--neon-mid); }
+    .btn-outline:hover { background: var(--neon-dim); transform: translateY(-1px); }
+
+    .cv-row { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .cv-row-label { font-size: 0.8rem; color: var(--muted); font-family: var(--mono); }
+    .cv-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 0.8rem; border-radius: 5px;
+      font-size: 0.78rem; font-weight: 500; font-family: var(--mono);
+      color: var(--muted); border: 0.5px solid var(--border);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .cv-chip:hover { color: var(--neon); border-color: var(--neon-mid); background: var(--neon-dim); }
+
+    .hero-scroll {
+      position: absolute; bottom: -3rem; left: 5%;
+      display: flex; align-items: center; gap: 0.75rem;
+      color: var(--muted); font-size: 0.72rem;
+      font-family: var(--mono); letter-spacing: 0.08em;
+      animation: fadeInUp 1s 2.5s both;
+    }
+    .scroll-line { width: 40px; height: 0.5px; background: var(--muted); }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+    /* ── TERMINAL BLOCK (Sobre) ── */
+    .terminal {
+      background: #0d0d0d;
+      border: 0.5px solid rgba(57,255,20,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 0.6rem 1rem;
+      background: #161616;
+      border-bottom: 0.5px solid rgba(57,255,20,0.1);
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot-r { background: #ff5f57; }
+    .t-dot-y { background: #febc2e; }
+    .t-dot-g { background: #28c840; }
+    .terminal-title { margin-left: 6px; font-size: 0.72rem; color: var(--muted); }
+    .terminal-body { padding: 1.25rem 1.25rem 1.5rem; line-height: 2; }
+    .t-prompt { color: var(--neon); }
+    .t-cmd { color: #e8e8e8; }
+    .t-out { color: var(--muted); display: block; padding-left: 1rem; }
+    .t-out-green { color: var(--neon); display: block; padding-left: 1rem; }
+    .t-line { display: block; margin-bottom: 0.25rem; }
+
+    /* ── SECTION HEADERS ── */
+    .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+    .section-num { font-family: var(--mono); font-size: 0.8rem; color: var(--neon); }
+    .section-title { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.01em; }
+    .section-line { flex: 1; height: 0.5px; background: var(--border); }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; line-height: 1.8; }
+    .about-photo {
+      aspect-ratio: 1; width: 160px; border-radius: 50%;
+      border: 2px solid var(--neon-mid);
+      box-shadow: 0 0 0 6px var(--neon-dim);
+      object-fit: cover; display: block; margin-bottom: 1.5rem;
+    }
+    .about-langs { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+    .lang-badge {
+      padding: 0.35rem 0.85rem; border-radius: 4px; font-size: 0.8rem;
+      border: 0.5px solid var(--neon-mid); color: var(--neon); background: var(--neon-dim);
+    }
+
+    /* ── STACK ── */
+    .stack-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .stack-group { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 1.5rem; transition: border-color 0.2s; }
+    .stack-group:hover { border-color: var(--neon-mid); }
+    .stack-group-label { font-family: var(--mono); font-size: 0.72rem; color: var(--neon); letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .stack-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .stack-item { padding: 0.3rem 0.7rem; border-radius: 4px; font-size: 0.8rem; background: var(--surface2); border: 0.5px solid var(--border); color: var(--text); transition: border-color 0.2s, color 0.2s; }
+    .stack-item:hover { border-color: var(--neon-mid); color: var(--neon); }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 0.5px; background: var(--border); }
+    .timeline-item { position: relative; margin-bottom: 3rem; }
+    .timeline-dot { position: absolute; left: -2.4rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+    .timeline-period { font-family: var(--mono); font-size: 0.75rem; color: var(--neon); margin-bottom: 0.25rem; }
+    .timeline-role { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.15rem; }
+    .timeline-company { font-size: 0.875rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+    .timeline-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .timeline-tag { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 3px; background: var(--surface2); color: var(--muted); border: 0.5px solid var(--border); }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 1.75rem;
+      transition: border-color 0.25s, transform 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--neon); opacity: 0; transition: opacity 0.25s;
+    }
+    .project-card:hover { border-color: var(--neon-mid); transform: translateY(-3px); }
+    .project-card:hover::before { opacity: 1; }
+    .project-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.75rem; }
+    .project-name { font-size: 1rem; font-weight: 600; }
+    .project-year { font-family: var(--mono); font-size: 0.75rem; color: var(--neon); }
+    .project-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .project-tag { font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 3px; background: var(--neon-dim); color: var(--neon); }
+
+    .project-image { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; margin-bottom: 0.75rem; display: block; }
+    .project-image-placeholder { width: 100%; height: 80px; border-radius: 6px; margin-bottom: 0.75rem; background: var(--surface2); border: 0.5px dashed var(--border); }
+    .project-link { display: inline-block; margin-top: 0.75rem; font-size: 0.8rem; color: var(--neon); font-family: var(--mono); }
+    .project-link:hover { text-decoration: underline; }
+
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-text h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
+    .contact-text p { color: var(--muted); line-height: 1.8; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.875rem;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      text-decoration: none;
+    }
+    .contact-link:hover { border-color: var(--neon-mid); background: var(--surface2); transform: translateX(4px); color: var(--text); }
+    .contact-link-icon { width: 36px; height: 36px; border-radius: 6px; background: var(--neon-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--neon); }
+    .contact-link-label { font-size: 0.75rem; color: var(--muted); }
+    .contact-link-value { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 0.5px solid var(--border); padding: 2rem 5%; text-align: center; color: var(--muted); font-size: 0.8rem; font-family: var(--mono); }
+    footer span { color: var(--neon); }
+
+    /* ── FADE-IN ON SCROLL ── */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect, useRef, useContext, createContext } = React;
+
+    /* ── I18N ── */
+    const I18N = {
+      pt: {
+        metaTitle: 'João Victor | Desenvolvedor Full Stack',
+        htmlLang: 'pt-BR',
+        nav: { items: [
+          { num: '01', label: 'Sobre',    href: '#sobre' },
+          { num: '02', label: 'Stack',    href: '#stack' },
+          { num: '03', label: 'Exp.',     href: '#experiencia' },
+          { num: '04', label: 'Projetos', href: '#projetos' },
+          { num: '05', label: 'Contato',  href: '#contato' },
+        ], cta: 'Contato' },
+        hero: {
+          tag: 'Disponível para novas oportunidades',
+          titles: ['Desenvolvedor Full Stack','Criador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Sempre aprendendo'],
+          bio: 'Desenvolvedor full stack com ~7 anos de experiência em React, PHP/Laravel, Node.js, Angular e Vue.js, integrando frontend, backend e banco de dados. Experiência em APIs REST, testes com Postman, manutenção evolutiva e corretiva, e apoio técnico a desenvolvedores em início de carreira. Baseado em Uberaba–MG, disponível para trabalho remoto (nacional e internacional).',
+          ctaPrimary: 'Ver projetos', ctaSecondary: 'Entre em contato',
+          cvLabel: 'Currículo:', scroll: 'scroll',
+        },
+        sections: { sobre: 'Sobre mim', stack: 'Tech Stack', experiencia: 'Experiência', projetos: 'Projetos', contato: 'Contato' },
+        about: {
+          paragraphs: [
+            'Comecei minha trajetória no Instituto Federal do Triângulo Mineiro (IFTM) com o Ensino Médio com Técnico Integrado em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.',
+            'Trabalhei na Valmont de 04/2017 a 07/2023, entrando como Assistente Administrativo e passando a programar em 09/2017, atuando como Desenvolvedor Júnior com liderança informal de mais de 5 desenvolvedores juniores. Criei dashboards e KPIs para agro e irrigação a partir de dados da plataforma e APIs externas; participei da plataforma de aferição de pivô central que substituiu um processo em Excel, com assinatura digital (DocuSign); desenvolvi painéis administrativos com hierarquia de papéis; e mapas e geolocalização com Google API. Depois, atuei na Bravo Logísticas (10/2023 a 06/2024) como Developer Especialista II, responsável por telas de rastreio de mercadorias, correções e melhorias no sistema interno, otimização de queries e back-end (lógica, estrutura, queries e APIs). Como MEI (09/2024 a 12/2025), atuei como Programador pleno remoto em marketplace e outros sistemas web, com Docker, consumo de API via Swagger e front-end.',
+            'Formação: Tecnólogo em Análise e Desenvolvimento de Sistemas (IFTM, 2019–2021, incompleto) e Ensino Médio com Técnico Integrado (IFTM).',
+            'Ao todo, são aproximadamente 7 anos de experiência em desenvolvimento web, com inglês e espanhol em nível B2.',
+          ],
+          langs: ['🇧🇷 Português — Nativo', '🇺🇸 Inglês — B2', '🇪🇸 Espanhol — B2'],
+        },
+        stack: [
+          { label: 'FRONTEND',       items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3','TypeScript'] },
+          { label: 'BACKEND',        items: ['PHP','Laravel','Node.js','APIs REST','OpenAPI/Swagger'] },
+          { label: 'BANCO DE DADOS', items: ['MySQL','SQL'] },
+          { label: 'MOBILE / CLOUD', items: ['Flutter','Dart','AWS Lambda'] },
+          { label: 'FERRAMENTAS',    items: ['Postman','Testes de API','Docker','Python','Git','Scrum','Kanban','Jira','Code review','Mentoria técnica'] },
+        ],
+        experience: [
+          { period: '2026 — atual', role: 'Estudos e projetos pessoais', company: 'Independente',
+            desc: 'Estudos e projetos pessoais em Flutter/Dart, React, bancos de dados, automação, IA e deploy.',
+            tags: ['Flutter','Dart','React','SQL','IA'] },
+          { period: '09/2024 — 12/2025', role: 'Programador Pleno (MEI, remoto)', company: 'Projetos Independentes',
+            desc: 'Desenvolvimento de marketplace (front-end e repositório, com Docker e consumo de API via Swagger) e outros sistemas web, integrando interfaces, regras de negócio e persistência de dados.',
+            tags: ['React','Node.js','Docker','Swagger','SQL'] },
+          { period: '10/2023 — 06/2024', role: 'Developer Especialista II', company: 'Bravo Logísticas',
+            desc: 'Telas de rastreio de mercadorias, correções e melhorias no sistema interno, otimização de queries; responsável por back-end (lógica, estrutura, queries e APIs).',
+            tags: ['Angular','Node.js','SQL'] },
+          { period: '04/2017 — 07/2023', role: 'Developer Júnior (liderança informal)', company: 'Valmont',
+            desc: 'Entrou como Assistente Administrativo e passou a programar em 09/2017, liderando informalmente mais de 5 desenvolvedores juniores. Dashboards e KPIs para agro e irrigação com dados da plataforma e APIs externas; plataforma de aferição de pivô central que substituiu processo em Excel, com assinatura digital (DocuSign); painéis administrativos com hierarquia de papéis; mapas e geolocalização com Google API; uso de Postman.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman','DocuSign','Google API'] },
+        ],
+        projects: [
+          { name: 'E-commerce de Produtos', year: '2024',
+            desc: 'Plataforma de comércio eletrônico com catálogo de produtos, carrinho e fluxo de pedidos.',
+            tags: ['Full Stack','Node.js','SQL'] },
+          { name: 'Sistema de Gestão Interna', year: '2018–2023',
+            desc: 'Desenvolvimento e manutenção de módulos de sistema ERP interno na Valmont, incluindo APIs integradas.',
+            tags: ['PHP','Laravel','Vue.js','MySQL'] },
+          { name: 'Gestor Completo', year: 'Beta', badge: 'Beta', link: 'https://github.com/JoaoVictorGH/bar_manager',
+            desc: 'App mobile de gestão para pequenos negócios: pedidos, produtos, estoque, caixa e painel de indicadores.',
+            tags: ['Flutter','Dart','SQLite','Mobile'] },
+          { name: 'Plataforma de Apostas', year: '2024',
+            desc: 'Sistema completo voltado a casas de apostas, com gestão de usuários, transações e painéis administrativos.',
+            tags: ['Full Stack','Node.js','SQL','REST API'] },
+          { name: 'Sistema de Rastreio de Mercadorias', year: '2023–2024',
+            desc: 'Telas de rastreio de mercadorias e melhorias no sistema interno da Bravo Logísticas, com otimização de queries e back-end.',
+            tags: ['Angular','Node.js','SQL'] },
+        ],
+        terminal: [
+          { type: 'cmd',       text: 'whoami' },
+          { type: 'out-green', text: 'joao-victor-fernandes' },
+          { type: 'cmd',       text: 'cat sobre.txt' },
+          { type: 'out',       text: 'Full Stack Dev | ~7 anos de experiência' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI → Estudos' },
+          { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
+          { type: 'cmd',       text: 'echo $LANGUAGES' },
+          { type: 'out-green', text: 'Português (nativo) · Inglês (B2) · Espanhol (B2)' },
+          { type: 'cmd',       text: 'echo "Sempre aprendendo, sempre entregando."' },
+          { type: 'out-green', text: 'Sempre aprendendo, sempre entregando.' },
+        ],
+        contact: {
+          heading: 'Vamos conversar?',
+          text: 'Estou aberto a novas oportunidades, projetos e colaborações. Se quiser trocar uma ideia ou tem um projeto em mente, é só entrar em contato.',
+          email: 'Email', github: 'GitHub', linkedin: 'LinkedIn', whatsapp: 'WhatsApp',
+        },
+        footer: 'Desenvolvido por',
+        projectLink: 'Ver repositório →',
+      },
+      en: {
+        metaTitle: 'João Victor | Full Stack Developer',
+        htmlLang: 'en',
+        nav: { items: [
+          { num: '01', label: 'About',    href: '#sobre' },
+          { num: '02', label: 'Stack',    href: '#stack' },
+          { num: '03', label: 'Exp.',     href: '#experiencia' },
+          { num: '04', label: 'Projects', href: '#projetos' },
+          { num: '05', label: 'Contact',  href: '#contato' },
+        ], cta: 'Contact' },
+        hero: {
+          tag: 'Available for new opportunities',
+          titles: ['Full Stack Developer','Builder of robust APIs','React · PHP/Laravel · Node','Angular · Vue.js','Always learning'],
+          bio: 'Full-stack developer with ~7 years of experience in React, PHP/Laravel, Node.js, Angular, and Vue.js, integrating frontend, backend, and databases. Experienced in REST APIs, API testing with Postman, corrective and evolutionary maintenance, and technical support for junior developers. Based in Uberaba–MG (Brazil), available for remote work (national and international).',
+          ctaPrimary: 'View projects', ctaSecondary: 'Get in touch',
+          cvLabel: 'Resume:', scroll: 'scroll',
+        },
+        sections: { sobre: 'About me', stack: 'Tech Stack', experiencia: 'Experience', projetos: 'Projects', contato: 'Contact' },
+        about: {
+          paragraphs: [
+            'I started my journey at Instituto Federal do Triângulo Mineiro (IFTM) with a technical program in IT Support and Maintenance integrated into high school. From there, I naturally moved into software development — and that’s where I found my calling.',
+            'I worked at Valmont from 04/2017 to 07/2023, starting as an Administrative Assistant and moving into programming in 09/2017, acting as a Junior Developer with informal leadership of more than 5 junior developers. I built dashboards and KPIs for agribusiness and irrigation from platform data and external APIs; took part in the central-pivot measurement platform that replaced an Excel process, with digital signature (DocuSign); developed admin panels with role hierarchy; and maps and geolocation with the Google API. Later, I worked at Bravo Logísticas (10/2023 to 06/2024) as a Developer Specialist II, responsible for merchandise tracking screens, fixes and improvements to the internal system, query optimization, and back-end (logic, structure, queries and APIs). As a self-employed developer (09/2024 to 12/2025), I worked remotely as a mid-level programmer on a marketplace and other web systems, using Docker, API consumption via Swagger, and front-end.',
+            'Education: Associate degree in Systems Analysis and Development (IFTM, 2019–2021, incomplete) and high school with integrated technical program (IFTM).',
+            'All together, that’s approximately 7 years of experience in web development, with English and Spanish at B2 level.',
+          ],
+          langs: ['🇧🇷 Portuguese — Native', '🇺🇸 English — B2', '🇪🇸 Spanish — B2'],
+        },
+        stack: [
+          { label: 'FRONTEND',  items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3','TypeScript'] },
+          { label: 'BACKEND',   items: ['PHP','Laravel','Node.js','REST APIs','OpenAPI/Swagger'] },
+          { label: 'DATABASE',  items: ['MySQL','SQL'] },
+          { label: 'MOBILE / CLOUD', items: ['Flutter','Dart','AWS Lambda'] },
+          { label: 'TOOLS',     items: ['Postman','API Testing','Docker','Python','Git','Scrum','Kanban','Jira','Code review','Technical Mentoring'] },
+        ],
+        experience: [
+          { period: '2026 — present', role: 'Studies and personal projects', company: 'Independent',
+            desc: 'Studies and personal projects in Flutter/Dart, React, databases, automation, AI, and deploy.',
+            tags: ['Flutter','Dart','React','SQL','AI'] },
+          { period: '09/2024 — 12/2025', role: 'Mid-level Programmer (Self-employed, remote)', company: 'Independent Projects',
+            desc: 'Developed a marketplace (front-end and repository, with Docker and API consumption via Swagger) and other web systems, integrating interfaces, business logic, and data persistence.',
+            tags: ['React','Node.js','Docker','Swagger','SQL'] },
+          { period: '10/2023 — 06/2024', role: 'Developer Specialist II', company: 'Bravo Logísticas',
+            desc: 'Merchandise tracking screens, fixes and improvements to the internal system, query optimization; responsible for back-end (logic, structure, queries and APIs).',
+            tags: ['Angular','Node.js','SQL'] },
+          { period: '04/2017 — 07/2023', role: 'Junior Developer (informal leadership)', company: 'Valmont',
+            desc: 'Started as Administrative Assistant and moved into programming in 09/2017, informally leading more than 5 junior developers. Dashboards and KPIs for agribusiness and irrigation from platform data and external APIs; central-pivot measurement platform that replaced an Excel process, with digital signature (DocuSign); admin panels with role hierarchy; maps and geolocation with the Google API; use of Postman.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman','DocuSign','Google API'] },
+        ],
+        projects: [
+          { name: 'E-commerce Platform', year: '2024',
+            desc: 'Online store with product catalog, shopping cart, and order flow.',
+            tags: ['Full Stack','Node.js','SQL'] },
+          { name: 'Internal Management System', year: '2018–2023',
+            desc: 'Development and maintenance of internal ERP system modules at Valmont, including integrated APIs.',
+            tags: ['PHP','Laravel','Vue.js','MySQL'] },
+          { name: 'Complete Manager', year: 'Beta', badge: 'Beta', link: 'https://github.com/JoaoVictorGH/bar_manager',
+            desc: 'Mobile management app for small businesses: orders, products, stock, cash register, and KPI dashboard.',
+            tags: ['Flutter','Dart','SQLite','Mobile'] },
+          { name: 'Betting Platform', year: '2024',
+            desc: 'Complete platform for betting operations, with user management, transactions, and admin dashboards.',
+            tags: ['Full Stack','Node.js','SQL','REST API'] },
+          { name: 'Merchandise Tracking System', year: '2023–2024',
+            desc: 'Merchandise tracking screens and improvements to Bravo Logísticas internal system, with query optimization and back-end.',
+            tags: ['Angular','Node.js','SQL'] },
+        ],
+        terminal: [
+          { type: 'cmd',       text: 'whoami' },
+          { type: 'out-green', text: 'joao-victor-fernandes' },
+          { type: 'cmd',       text: 'cat about.txt' },
+          { type: 'out',       text: 'Full Stack Dev | ~7 years of experience' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → Self-employed → Studies' },
+          { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
+          { type: 'cmd',       text: 'echo $LANGUAGES' },
+          { type: 'out-green', text: 'Portuguese (native) · English (B2) · Spanish (B2)' },
+          { type: 'cmd',       text: 'echo "Always learning, always delivering."' },
+          { type: 'out-green', text: 'Always learning, always delivering.' },
+        ],
+        contact: {
+          heading: 'Let’s talk?',
+          text: 'I’m open to new opportunities, projects, and collaborations. If you’d like to chat or have a project in mind, feel free to reach out.',
+          email: 'Email', github: 'GitHub', linkedin: 'LinkedIn', whatsapp: 'WhatsApp',
+        },
+        footer: 'Built by',
+        projectLink: 'View repository →',
+      },
+      es: {
+        metaTitle: 'João Victor | Desarrollador Full Stack',
+        htmlLang: 'es',
+        nav: { items: [
+           { num: '01', label: 'Sobre mí',  href: '#sobre' },
+          { num: '02', label: 'Stack',     href: '#stack' },
+          { num: '03', label: 'Exp.',      href: '#experiencia' },
+          { num: '04', label: 'Proyectos', href: '#projetos' },
+          { num: '05', label: 'Contacto',  href: '#contato' },
+        ], cta: 'Contacto' },
+        hero: {
+          tag: 'Disponible para nuevas oportunidades',
+          titles: ['Desarrollador Full Stack','Creador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Siempre aprendiendo'],
+          bio: 'Desarrollador full stack con ~7 años de experiencia en React, PHP/Laravel, Node.js, Angular y Vue.js, integrando frontend, backend y bases de datos. Experiencia en API REST, pruebas con Postman, mantenimiento correctivo y evolutivo, y apoyo técnico a desarrolladores junior. Basado en Uberaba–MG (Brasil), disponible para trabajo remoto (nacional e internacional).',
+          ctaPrimary: 'Ver proyectos', ctaSecondary: 'Hablemos',
+          cvLabel: 'Currículum:', scroll: 'scroll',
+        },
+        sections: { sobre: 'Sobre mí', stack: 'Tech Stack', experiencia: 'Experiencia', projetos: 'Proyectos', contato: 'Contacto' },
+        about: {
+          paragraphs: [
+            'Comencé mi trayectoria en el Instituto Federal do Triângulo Mineiro (IFTM) con la formación técnica en Soporte y Mantenimiento Informático integrada al bachillerato. Desde el área técnica, migré naturalmente al desarrollo de software — y ahí encontré mi vocación.',
+            'Trabajé en Valmont de 04/2017 a 07/2023, entrando como Asistente Administrativo y pasando a programar en 09/2017, actuando como Desarrollador Júnior con liderazgo informal de más de 5 desarrolladores júnior. Creé dashboards y KPIs para agro e irrigación a partir de datos de la plataforma y APIs externas; participé en la plataforma de medición de pivote central que sustituyó un proceso en Excel, con firma digital (DocuSign); desarrollé paneles administrativos con jerarquía de roles; y mapas y geolocalización con la API de Google. Después, trabajé en Bravo Logísticas (10/2023 a 06/2024) como Developer Especialista II, responsable de pantallas de seguimiento de mercancías, correcciones y mejoras del sistema interno, optimización de consultas y back-end (lógica, estructura, consultas y APIs). Como independiente (09/2024 a 12/2025), trabajé de forma remota como programador de nivel medio en un marketplace y otros sistemas web, con Docker, consumo de API vía Swagger y front-end.',
+            'Formación: Tecnólogo en Análisis y Desarrollo de Sistemas (IFTM, 2019–2021, incompleto) y bachillerato con formación técnica integrada (IFTM).',
+            'En total, son aproximadamente 7 años de experiencia en desarrollo web, con inglés y español en nivel B2.',
+          ],
+          langs: ['🇧🇷 Portugués — Nativo', '🇺🇸 Inglés — B2', '🇪🇸 Español — B2'],
+        },
+        stack: [
+          { label: 'FRONTEND',        items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3','TypeScript'] },
+          { label: 'BACKEND',         items: ['PHP','Laravel','Node.js','API REST','OpenAPI/Swagger'] },
+          { label: 'BASE DE DATOS',   items: ['MySQL','SQL'] },
+          { label: 'MOBILE / CLOUD', items: ['Flutter','Dart','AWS Lambda'] },
+          { label: 'HERRAMIENTAS',    items: ['Postman','Pruebas de API','Docker','Python','Git','Scrum','Kanban','Jira','Code review','Mentoría técnica'] },
+        ],
+        experience: [
+          { period: '2026 — actual', role: 'Estudios y proyectos personales', company: 'Independiente',
+            desc: 'Estudios y proyectos personales en Flutter/Dart, React, bases de datos, automatización, IA y deploy.',
+            tags: ['Flutter','Dart','React','SQL','IA'] },
+          { period: '09/2024 — 12/2025', role: 'Programador de nivel medio (Independiente, remoto)', company: 'Proyectos Independientes',
+            desc: 'Desarrolló un marketplace (front-end y repositorio, con Docker y consumo de API vía Swagger) y otros sistemas web, integrando interfaces, reglas de negocio y persistencia de datos.',
+            tags: ['React','Node.js','Docker','Swagger','SQL'] },
+          { period: '10/2023 — 06/2024', role: 'Developer Especialista II', company: 'Bravo Logísticas',
+            desc: 'Pantallas de seguimiento de mercancías, correcciones y mejoras del sistema interno, optimización de consultas; responsable del back-end (lógica, estructura, consultas y APIs).',
+            tags: ['Angular','Node.js','SQL'] },
+          { period: '04/2017 — 07/2023', role: 'Developer Júnior (liderazgo informal)', company: 'Valmont',
+            desc: 'Entró como Asistente Administrativo y pasó a programar en 09/2017, liderando informalmente a más de 5 desarrolladores júnior. Dashboards y KPIs para agro e irrigación con datos de la plataforma y APIs externas; plataforma de medición de pivote central que sustituyó un proceso en Excel, con firma digital (DocuSign); paneles administrativos con jerarquía de roles; mapas y geolocalización con la API de Google; uso de Postman.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman','DocuSign','Google API'] },
+        ],
+        projects: [
+          { name: 'E-commerce de Productos', year: '2024',
+            desc: 'Plataforma de comercio electrónico con catálogo de productos, carrito y flujo de pedidos.',
+            tags: ['Full Stack','Node.js','SQL'] },
+          { name: 'Sistema de Gestión Interna', year: '2018–2023',
+            desc: 'Desarrollo y mantenimiento de módulos del sistema ERP interno en Valmont, incluyendo APIs integradas.',
+            tags: ['PHP','Laravel','Vue.js','MySQL'] },
+          { name: 'Gestor Completo', year: 'Beta', badge: 'Beta', link: 'https://github.com/JoaoVictorGH/bar_manager',
+            desc: 'App móvil de gestión para pequeños negocios: pedidos, productos, stock, caja y panel de indicadores.',
+            tags: ['Flutter','Dart','SQLite','Mobile'] },
+          { name: 'Plataforma de Apuestas', year: '2024',
+            desc: 'Sistema completo para casas de apuestas, con gestión de usuarios, transacciones y paneles administrativos.',
+            tags: ['Full Stack','Node.js','SQL','REST API'] },
+          { name: 'Sistema de Seguimiento de Mercancías', year: '2023–2024',
+            desc: 'Pantallas de seguimiento de mercancías y mejoras del sistema interno de Bravo Logísticas, con optimización de consultas y back-end.',
+            tags: ['Angular','Node.js','SQL'] },
+        ],
+        terminal: [
+          { type: 'cmd',       text: 'whoami' },
+          { type: 'out-green', text: 'joao-victor-fernandes' },
+          { type: 'cmd',       text: 'cat sobre.txt' },
+          { type: 'out',       text: 'Full Stack Dev | ~7 años de experiencia' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → Independiente → Estudios' },
+          { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
+          { type: 'cmd',       text: 'echo $LANGUAGES' },
+          { type: 'out-green', text: 'Portugués (nativo) · Inglés (B2) · Español (B2)' },
+          { type: 'cmd',       text: 'echo "Siempre aprendiendo, siempre entregando."' },
+          { type: 'out-green', text: 'Siempre aprendiendo, siempre entregando.' },
+        ],
+        contact: {
+          heading: '¿Hablamos?',
+          text: 'Estoy abierto a nuevas oportunidades, proyectos y colaboraciones. Si quieres intercambiar ideas o tienes un proyecto en mente, no dudes en contactarme.',
+          email: 'Email', github: 'GitHub', linkedin: 'LinkedIn', whatsapp: 'WhatsApp',
+        },
+        footer: 'Desarrollado por',
+        projectLink: 'Ver repositorio →',
+      },
+    };
+
+    const LANGS = [
+      { code: 'pt', label: 'PT' },
+      { code: 'en', label: 'EN' },
+      { code: 'es', label: 'ES' },
+    ];
+
+    const LangContext = createContext({ lang: 'pt', setLang: () => {} });
+    function useLang() { return useContext(LangContext); }
+
+    const CV_FILES = [
+      { lang: 'pt', label: 'PT-BR', href: 'cv/Curriculo_Joao_Victor_PT_BR.pdf' },
+      { lang: 'en', label: 'EN',    href: 'cv/Resume_Joao_Victor_EN.pdf' },
+      { lang: 'es', label: 'ES',    href: 'cv/CV_Joao_Victor_ES.pdf' },
+    ];
+
+    /* ── TYPEWRITER HOOK ── */
+    function useTypewriter(text, speed = 38, delay = 0) {
+      const [displayed, setDisplayed] = useState('');
+      const [done, setDone] = useState(false);
+      useEffect(() => {
+        setDisplayed(''); setDone(false);
+        let i = 0;
+        const t = setTimeout(() => {
+          const iv = setInterval(() => {
+            i++;
+            setDisplayed(text.slice(0, i));
+            if (i >= text.length) { clearInterval(iv); setDone(true); }
+          }, speed);
+          return () => clearInterval(iv);
+        }, delay);
+        return () => clearTimeout(t);
+      }, [text, speed, delay]);
+      return { displayed, done };
+    }
+
+    /* ── TERMINAL TYPEWRITER ── */
+    function TerminalTyper({ lines }) {
+      const [visible, setVisible] = useState([]);
+      const ref = useRef(null);
+      const started = useRef(false);
+
+      useEffect(() => {
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting && !started.current) {
+            started.current = true;
+            let delay = 300;
+            lines.forEach((line, i) => {
+              setTimeout(() => setVisible(v => [...v, i]), delay);
+              delay += line.type === 'cmd' ? line.text.length * 32 + 200 : 80;
+            });
+          }
+        }, { threshold: 0.3 });
+        if (ref.current) obs.observe(ref.current);
+        return () => obs.disconnect();
+      }, []);
+
+      return (
+        <div className="terminal" ref={ref}>
+          <div className="terminal-bar">
+            <span className="t-dot t-dot-r" />
+            <span className="t-dot t-dot-y" />
+            <span className="t-dot t-dot-g" />
+            <span className="terminal-title">~/joaovhfs — bash</span>
+          </div>
+          <div className="terminal-body">
+            {lines.map((line, i) => (
+              visible.includes(i) ? (
+                <TerminalLine key={i} line={line} isLast={i === lines.length - 1} />
+              ) : null
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function TerminalLine({ line, isLast }) {
+      const [text, setText] = useState('');
+      const [done, setDone] = useState(line.type !== 'cmd');
+      useEffect(() => {
+        if (line.type !== 'cmd') { setText(line.text); return; }
+        let i = 0;
+        const iv = setInterval(() => {
+          i++;
+          setText(line.text.slice(0, i));
+          if (i >= line.text.length) { clearInterval(iv); setDone(true); }
+        }, 32);
+        return () => clearInterval(iv);
+      }, []);
+
+      if (line.type === 'cmd') return (
+        <span className="t-line">
+          <span className="t-prompt">~$ </span>
+          <span className="t-cmd">{text}</span>
+          {!done && <span className="cursor" />}
+        </span>
+      );
+      if (line.type === 'out-green') return <span className="t-out-green">{text}</span>;
+      return <span className="t-out">{text}</span>;
+    }
+
+    /* ── SECTION HEADER with typewriter on scroll ── */
+    function SectionHeader({ num, title }) {
+      const ref = useRef(null);
+      const [started, setStarted] = useState(false);
+      const { displayed, done } = useTypewriter(title, 45, 0);
+      const [show, setShow] = useState(false);
+
+      useEffect(() => {
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting && !started) { setStarted(true); setShow(true); }
+        }, { threshold: 0.5 });
+        if (ref.current) obs.observe(ref.current);
+        return () => obs.disconnect();
+      }, [started]);
+
+      return (
+        <div className="section-header" ref={ref}>
+          <span className="section-num">{num}</span>
+          <h2 className="section-title">
+            {show ? displayed : ''}
+            {show && !done && <span className="cursor" />}
+          </h2>
+          <div className="section-line" />
+        </div>
+      );
+    }
+
+    /* ── FADE IN WRAPPER ── */
+    function FadeIn({ children, delay = 0 }) {
+      const ref = useRef(null);
+      useEffect(() => {
+        const el = ref.current; if (!el) return;
+        el.style.transitionDelay = delay + 'ms';
+        const obs = new IntersectionObserver(([e]) => {
+          if (e.isIntersecting) { el.classList.add('visible'); obs.disconnect(); }
+        }, { threshold: 0.15 });
+        obs.observe(el);
+        return () => obs.disconnect();
+      }, []);
+      return <div className="fade-in" ref={ref}>{children}</div>;
+    }
+
+    /* ── ICONS ── */
+    const IconMail = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+    );
+    const IconGithub = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S9.1 17.4 9 18v4"/>
+        <path d="M9 18c-4.51 2-5-2-7-2"/>
+      </svg>
+    );
+    const IconArrow = () => (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    );
+    const IconLinkedin = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+    );
+    const IconWhatsapp = () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.44 1.32 4.95L2.05 22l5.25-1.38a9.94 9.94 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm0 1.67c2.21 0 4.29.86 5.85 2.42a8.22 8.22 0 0 1 2.42 5.82c0 4.54-3.7 8.24-8.27 8.24a8.3 8.3 0 0 1-4.21-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.39c0-4.54 3.7-8.23 8.26-8.23zm-4.6 4.73c-.16 0-.43.06-.65.31-.22.25-.86.84-.86 2.04 0 1.2.88 2.37 1 2.53.12.16 1.7 2.73 4.2 3.72 2.08.83 2.5.66 2.96.62.45-.04 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.45-.28-.23-.12-1.37-.68-1.59-.75-.21-.08-.37-.12-.52.12-.16.24-.6.75-.73.9-.14.16-.27.17-.5.06-.23-.12-.98-.36-1.87-1.15-.69-.62-1.16-1.37-1.3-1.61-.13-.23-.01-.36.1-.48.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.52-1.27-.72-1.73-.18-.45-.37-.39-.52-.4-.13-.01-.28-.01-.44-.01z"/>
+      </svg>
+    );
+    const IconDownload = () => (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <path d="M7 10l5 5 5-5"/>
+        <path d="M12 15V3"/>
+      </svg>
+    );
+
+    /* ── HERO TITLE rotator ── */
+    function HeroTitle({ titles }) {
+      const [idx, setIdx] = useState(0);
+      const { displayed, done } = useTypewriter(titles[idx], 50, 400);
+      useEffect(() => {
+        if (!done) return;
+        const t = setTimeout(() => setIdx(i => (i + 1) % titles.length), 1800);
+        return () => clearTimeout(t);
+      }, [done, idx]);
+      return (
+        <p className="hero-title">
+          <span className="typed-highlight">{displayed}</span>
+          <span className="cursor" />
+        </p>
+      );
+    }
+
+    /* ── LANGUAGE SWITCH ── */
+    function LangSwitch() {
+      const { lang, setLang } = useLang();
+      return (
+        <div className="lang-switch">
+          {LANGS.map(l => (
+            <button
+              key={l.code}
+              type="button"
+              className={'lang-btn' + (lang === l.code ? ' active' : '')}
+              onClick={() => setLang(l.code)}
+              aria-label={'Switch language to ' + l.label}
+              aria-pressed={lang === l.code}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    /* ── NAV ── */
+    function Nav() {
+      const { lang } = useLang();
+      const t = I18N[lang];
+      const [scrolled, setScrolled] = useState(false);
+      const [active, setActive] = useState('');
+
+      useEffect(() => {
+        const onScroll = () => {
+          setScrolled(window.scrollY > 20);
+          const sections = ['sobre','stack','experiencia','projetos','contato'];
+          let cur = '';
+          sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && window.scrollY >= el.offsetTop - 120) cur = '#' + id;
+          });
+          setActive(cur);
+        };
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+      }, []);
+
+      return (
+        <nav className={scrolled ? 'scrolled' : ''}>
+          <div className="nav-logo">&lt;JV /&gt;</div>
+          <ul className="nav-links">
+            {t.nav.items.map(item => (
+              <li key={item.href}>
+                <a href={item.href} className={active === item.href ? 'active' : ''}>
+                  <span className="nav-num">{item.num}.</span>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div className="nav-right">
+            <LangSwitch />
+            <a className="nav-cta" href="https://wa.me/5534991727865" target="_blank" rel="noreferrer">
+              {t.nav.cta} <IconArrow />
+            </a>
+          </div>
+        </nav>
+      );
+    }
+
+    /* ── APP ── */
+    function App() {
+      const [lang, setLangState] = useState(() => {
+        try {
+          const saved = window.localStorage.getItem('portfolio-lang');
+          if (saved && I18N[saved]) return saved;
+        } catch (e) {}
+        return 'pt';
+      });
+
+      const setLang = (next) => {
+        setLangState(next);
+        try { window.localStorage.setItem('portfolio-lang', next); } catch (e) {}
+      };
+
+      const t = I18N[lang];
+
+      useEffect(() => {
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.metaTitle;
+      }, [lang]);
+
+       return (
+         <LangContext.Provider value={{ lang, setLang }}>
+           <main>
+           <Nav />
+
+          {/* HERO */}
+          <div className="hero-wrap">
+            <section id="hero">
+              <div className="hero-tag">
+                <span className="hero-tag-dot" />
+                // {t.hero.tag}
+              </div>
+              <h1 className="hero-name">João Victor<br/>Fernandes</h1>
+              <HeroTitle key={lang} titles={t.hero.titles} />
+              <p className="hero-bio">{t.hero.bio}</p>
+              <div className="hero-cta">
+                <a className="btn btn-primary" href="#projetos">{t.hero.ctaPrimary}</a>
+                <a className="btn btn-outline" href="#contato">{t.hero.ctaSecondary}</a>
+              </div>
+              <div className="cv-row">
+                <span className="cv-row-label">{t.hero.cvLabel}</span>
+                {CV_FILES.map(cv => (
+                  <a key={cv.lang} className="cv-chip" href={cv.href} download>
+                    <IconDownload /> {cv.label}
+                  </a>
+                ))}
+              </div>
+            </section>
+            <div className="hero-scroll"><div className="scroll-line" />{t.hero.scroll}</div>
+          </div>
+
+          {/* SOBRE */}
+          <section id="sobre">
+            <SectionHeader key={'sobre-' + lang} num="01." title={t.sections.sobre} />
+            <div className="about-grid">
+              <FadeIn>
+                <div className="about-text">
+                  <img className="about-photo" src="profile.jpg" alt="Foto de João Victor Fernandes" />
+                  {t.about.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+                  <div className="about-langs">
+                    {t.about.langs.map((l, i) => <span key={i} className="lang-badge">{l}</span>)}
+                  </div>
+                </div>
+              </FadeIn>
+              <FadeIn delay={150}>
+                <TerminalTyper key={lang} lines={t.terminal} />
+              </FadeIn>
+            </div>
+          </section>
+
+          {/* STACK */}
+          <section id="stack">
+            <SectionHeader key={'stack-' + lang} num="02." title={t.sections.stack} />
+            <div className="stack-groups">
+              {t.stack.map((g, i) => (
+                <FadeIn key={g.label} delay={i * 80}>
+                  <div className="stack-group">
+                    <div className="stack-group-label">{g.label}</div>
+                    <div className="stack-items">
+                      {g.items.map(item => <span key={item} className="stack-item">{item}</span>)}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* EXPERIÊNCIA */}
+          <section id="experiencia">
+            <SectionHeader key={'exp-' + lang} num="03." title={t.sections.experiencia} />
+            <div className="timeline">
+              {t.experience.map((e, i) => (
+                <FadeIn key={i} delay={i * 100}>
+                  <div className="timeline-item">
+                    <div className="timeline-dot" />
+                    <div className="timeline-period">{e.period}</div>
+                    <div className="timeline-role">{e.role}</div>
+                    <div className="timeline-company">{e.company}</div>
+                    <div className="timeline-desc">{e.desc}</div>
+                    <div className="timeline-tags">
+                      {e.tags.map(tg => <span key={tg} className="timeline-tag">{tg}</span>)}
+                    </div>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* PROJETOS */}
+          <section id="projetos">
+            <SectionHeader key={'proj-' + lang} num="04." title={t.sections.projetos} />
+            <div className="projects-grid">
+              {t.projects.map((p, i) => (
+                <FadeIn key={i} delay={i * 100}>
+                  <div className="project-card">
+                    {p.image && <img className="project-image" src={p.image} alt={p.name} loading="lazy" />}
+                    {!p.image && <div className="project-image-placeholder" aria-hidden="true" />}
+                    <div className="project-card-header">
+                      <span className="project-name">{p.name}{p.badge ? <span className="project-badge">{p.badge}</span> : null}</span>
+                      <span className="project-year">{p.year}</span>
+                    </div>
+                    <p className="project-desc">{p.desc}</p>
+                    <div className="project-tags">
+                      {p.tags.map(tg => <span key={tg} className="project-tag">{tg}</span>)}
+                    </div>
+                    {p.link && <a className="project-link" href={p.link} target="_blank" rel="noreferrer">{t.projectLink}</a>}
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </section>
+
+          {/* CONTATO */}
+          <section id="contato">
+            <SectionHeader key={'contato-' + lang} num="05." title={t.sections.contato} />
+            <div className="contact-inner">
+              <FadeIn>
+                <div className="contact-text">
+                  <h3>{t.contact.heading}</h3>
+                  <p>{t.contact.text}</p>
+                </div>
+              </FadeIn>
+              <FadeIn delay={150}>
+                <div className="contact-links">
+                  <a className="contact-link" href="mailto:joaovhfs@gmail.com">
+                    <div className="contact-link-icon"><IconMail /></div>
+                    <div>
+                      <div className="contact-link-label">{t.contact.email}</div>
+                      <div className="contact-link-value">joaovhfs@gmail.com</div>
+                    </div>
+                  </a>
+                  <a className="contact-link" href="https://github.com/JoaoVictorGH" target="_blank" rel="noreferrer">
+                    <div className="contact-link-icon"><IconGithub /></div>
+                    <div>
+                      <div className="contact-link-label">{t.contact.github}</div>
+                      <div className="contact-link-value">github.com/JoaoVictorGH</div>
+                    </div>
+                  </a>
+                  <a className="contact-link" href="https://www.linkedin.com/in/joao-victor-hermogenes-fernandes-e-silva-92aa8b225/" target="_blank" rel="noreferrer">
+                    <div className="contact-link-icon"><IconLinkedin /></div>
+                    <div>
+                      <div className="contact-link-label">{t.contact.linkedin}</div>
+                      <div className="contact-link-value">João Victor H. Fernandes e Silva</div>
+                    </div>
+                  </a>
+                  <a className="contact-link" href="https://wa.me/5534991727865" target="_blank" rel="noreferrer">
+                    <div className="contact-link-icon"><IconWhatsapp /></div>
+                    <div>
+                      <div className="contact-link-label">{t.contact.whatsapp}</div>
+                      <div className="contact-link-value">+55 (34) 9 9172-7865</div>
+                    </div>
+                  </a>
+                </div>
+              </FadeIn>
+            </div>
+          </section>
+
+          <footer>
+            <p>{t.footer} <span>João Victor Fernandes</span></p>
+          </footer>
+           </main>
+         </LangContext.Provider>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
