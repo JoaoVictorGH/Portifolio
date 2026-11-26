@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>João Victor | Desenvolvedor Fullstack</title>
+  <meta name="description" content="João Victor Hermogenes Fernandes e Silva — Desenvolvedor Full Stack. Uberaba–MG. Disponível para trabalho remoto." />
+  <meta property="og:title" content="João Victor | Desenvolvedor Full Stack" />
+  <meta property="og:description" content="Portfólio de João Victor Hermogenes Fernandes e Silva, desenvolvedor full stack." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="profile.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>" />
+  <title>João Victor | Desenvolvedor Full Stack</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    .skip-link { position: absolute; top: -40px; left: 0; background: var(--neon); color: #000; padding: 0.5rem 1rem; z-index: 200; transition: top 0.2s; }
+    .skip-link:focus { top: 0; }
+    :focus-visible { outline: 2px solid var(--neon); outline-offset: 2px; }
     :root {
       --neon: #39ff14;
       --neon-dim: rgba(57,255,20,0.12);
@@ -301,7 +312,10 @@
     .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .project-tag { font-size: 0.72rem; padding: 0.2rem 0.55rem; border-radius: 3px; background: var(--neon-dim); color: var(--neon); }
 
-    /* ── CONTACT ── */
+    .project-image { width: 100%; height: 140px; object-fit: cover; border-radius: 6px; margin-bottom: 0.75rem; display: block; }
+    .project-image-placeholder { width: 100%; height: 80px; border-radius: 6px; margin-bottom: 0.75rem; background: var(--surface2); border: 0.5px dashed var(--border); }
+    .project-badge { font-family: var(--mono); font-size: 0.65rem; color: #000; background: var(--neon); padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.5rem; vertical-align: middle; }
+
     .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
     .contact-text h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
     .contact-text p { color: var(--muted); line-height: 1.8; }
@@ -334,6 +348,7 @@
   </style>
 </head>
 <body>
+  <a className="skip-link" href="#sobre">Pular para o conteúdo</a>
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect, useRef, useContext, createContext } = React;
@@ -341,7 +356,7 @@
     /* ── I18N ── */
     const I18N = {
       pt: {
-        metaTitle: 'João Victor | Desenvolvedor Fullstack',
+        metaTitle: 'João Victor | Desenvolvedor Full Stack',
         htmlLang: 'pt-BR',
         nav: { items: [
           { num: '01', label: 'Sobre',    href: '#sobre' },
@@ -352,57 +367,62 @@
         ], cta: 'Contato' },
         hero: {
           tag: 'Disponível para novas oportunidades',
-          titles: ['Desenvolvedor Fullstack','Criador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Sempre aprendendo'],
-          bio: 'Desenvolvedor fullstack com ~7 anos de experiência em React, PHP/Laravel, Node.js, Angular e Vue.js, integrando frontend, backend e banco de dados. Experiência em APIs REST, testes com Postman, manutenção evolutiva e corretiva, e apoio técnico a desenvolvedores em início de carreira.',
+          titles: ['Desenvolvedor Full Stack','Criador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Sempre aprendendo'],
+          bio: 'Desenvolvedor full stack com ~7 anos de experiência em React, PHP/Laravel, Node.js, Angular e Vue.js, integrando frontend, backend e banco de dados. Experiência em APIs REST, testes com Postman, manutenção evolutiva e corretiva, e apoio técnico a desenvolvedores em início de carreira. Baseado em Uberaba–MG, disponível para trabalho remoto (nacional e internacional).',
           ctaPrimary: 'Ver projetos', ctaSecondary: 'Entre em contato',
           cvLabel: 'Currículo:', scroll: 'scroll',
         },
         sections: { sobre: 'Sobre mim', stack: 'Tech Stack', experiencia: 'Experiência', projetos: 'Projetos', contato: 'Contato' },
         about: {
           paragraphs: [
-            'Comecei minha trajetória no Instituto Federal do Triângulo Mineiro com técnico em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.',
-            'Trabalhei por anos na Valmont, onde cresci de assistente administrativo a desenvolvedor fullstack, criando e mantendo sistemas reais, testando APIs com Postman e apoiando estagiários desenvolvedores. Depois, ampliei meu repertório na Bravo Logísticas e dei o passo de empreender como MEI, levando React para as minhas aplicações.',
-            'Ao todo, são aproximadamente 7 anos de experiência em desenvolvimento web, com inglês e espanhol intermediário-avançados.',
+            'Comecei minha trajetória no Instituto Federal do Triângulo Mineiro (IFTM) com o Ensino Médio com Técnico Integrado em Suporte e Manutenção em Informática. Da área técnica, migrei naturalmente para o desenvolvimento de software — e foi onde encontrei minha vocação.',
+            'Trabalhei na Valmont de 04/2017 a 07/2023, entrando como Assistente Administrativo e passando a programar em 09/2017, atuando como Desenvolvedor Júnior com liderança informal de mais de 5 desenvolvedores juniores. Criei dashboards e KPIs para agro e irrigação a partir de dados da plataforma e APIs externas; participei da plataforma de aferição de pivô central que substituiu um processo em Excel, com assinatura digital (DocuSign); desenvolvi painéis administrativos com hierarquia de papéis; e mapas e geolocalização com Google API. Depois, atuei na Bravo Logísticas (10/2023 a 06/2024) como Developer Especialista II, responsável por telas de rastreio de mercadorias, correções e melhorias no sistema interno, otimização de queries e back-end (lógica, estrutura, queries e APIs). Como MEI (09/2024 a 12/2025), atuei como Programador pleno remoto em marketplace e outros sistemas web, com Docker, consumo de API via Swagger e front-end.',
+            'Formação: Tecnólogo em Análise e Desenvolvimento de Sistemas (IFTM, 2019–2021, incompleto) e Ensino Médio com Técnico Integrado (IFTM).',
+            'Ao todo, são aproximadamente 7 anos de experiência em desenvolvimento web, com inglês e espanhol em nível B2.',
           ],
-          langs: ['🇧🇷 Português — Nativo', '🇺🇸 Inglês — Intermediário Avançado', '🇪🇸 Espanhol — Intermediário Avançado'],
+          langs: ['🇧🇷 Português — Nativo', '🇺🇸 Inglês — B2', '🇪🇸 Espanhol — B2'],
         },
         stack: [
-          { label: 'FRONTEND',       items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
-          { label: 'BACKEND',        items: ['PHP','Laravel','Node.js','APIs REST'] },
+          { label: 'FRONTEND',       items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3','TypeScript'] },
+          { label: 'BACKEND',        items: ['PHP','Laravel','Node.js','APIs REST','OpenAPI/Swagger'] },
           { label: 'BANCO DE DADOS', items: ['MySQL','SQL'] },
-          { label: 'FERRAMENTAS',    items: ['Postman','Testes de API','Mentoria técnica','ArcGIS','Excel','Git'] },
+          { label: 'MOBILE / CLOUD', items: ['Flutter','Dart','AWS Lambda'] },
+          { label: 'FERRAMENTAS',    items: ['Postman','Testes de API','Docker','Python','Git','Scrum','Kanban','Jira','Code review','Mentoria técnica'] },
         ],
         experience: [
-          { period: '2024 — 2025', role: 'Programador (MEI)', company: 'Projetos Independentes',
-            desc: 'Desenvolvimento de aplicações web completas para operações comerciais como empreendedor individual, com React no frontend e integração entre interfaces, regras de negócio e persistência de dados.',
-            tags: ['React','Node.js','SQL','APIs REST'] },
-          { period: '2023 — 2024', role: 'Programador', company: 'Bravo Logísticas',
-            desc: 'Criação e manutenção de telas do sistema interno da empresa, conectando frontend, serviços backend e banco de dados. Aprimoramento técnico contínuo via trilhas da Alura oferecidas pela empresa.',
+          { period: '09/2024 — 12/2025', role: 'Programador Pleno (MEI, remoto)', company: 'Projetos Independentes',
+            desc: 'Desenvolvimento de marketplace (front-end e repositório, com Docker e consumo de API via Swagger) e outros sistemas web, integrando interfaces, regras de negócio e persistência de dados.',
+            tags: ['React','Node.js','Docker','Swagger','SQL'] },
+          { period: '10/2023 — 06/2024', role: 'Developer Especialista II', company: 'Bravo Logísticas',
+            desc: 'Telas de rastreio de mercadorias, correções e melhorias no sistema interno, otimização de queries; responsável por back-end (lógica, estrutura, queries e APIs).',
             tags: ['Angular','Node.js','SQL'] },
-          { period: '2018 — 2023', role: 'Desenvolvedor / Assistente Administrativo', company: 'Valmont',
-            desc: 'Migração da área administrativa para o desenvolvimento de software. Criação e manutenção de sistemas e APIs, testes funcionais e de integração com Postman, e apoio a estagiários desenvolvedores na compreensão do sistema e resolução de dúvidas técnicas.',
-            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
-          { period: '2017 — 2018', role: 'Assistente', company: 'Valmont',
-            desc: 'Apoio a atividades com ArcGIS, planilhas Excel e plataforma corporativa própria, contribuindo para a organização e continuidade das rotinas.',
-            tags: ['ArcGIS','Excel'] },
+          { period: '04/2017 — 07/2023', role: 'Developer Júnior (liderança informal)', company: 'Valmont',
+            desc: 'Entrou como Assistente Administrativo e passou a programar em 09/2017, liderando informalmente mais de 5 desenvolvedores juniores. Dashboards e KPIs para agro e irrigação com dados da plataforma e APIs externas; plataforma de aferição de pivô central que substituiu processo em Excel, com assinatura digital (DocuSign); painéis administrativos com hierarquia de papéis; mapas e geolocalização com Google API; uso de Postman.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman','DocuSign','Google API'] },
+          { period: '2025 — atual', role: 'Estudos e projetos pessoais', company: 'Independente',
+            desc: 'Estudos e projetos pessoais em Flutter/Dart, React, bancos de dados, automação, IA e deploy.',
+            tags: ['Flutter','Dart','React','SQL','IA'] },
         ],
         projects: [
-          { name: 'Plataforma de Apostas', year: '2024',
-            desc: 'Sistema completo voltado a casas de apostas, com gestão de usuários, transações e painéis administrativos.',
-            tags: ['Fullstack','Node.js','SQL','REST API'] },
           { name: 'E-commerce de Produtos', year: '2024',
             desc: 'Plataforma de comércio eletrônico com catálogo de produtos, carrinho e fluxo de pedidos.',
-            tags: ['Fullstack','Node.js','SQL'] },
+            tags: ['Full Stack','Node.js','SQL'] },
           { name: 'Sistema de Gestão Interna', year: '2018–2023',
             desc: 'Desenvolvimento e manutenção de módulos de sistema ERP interno na Valmont, incluindo APIs integradas.',
             tags: ['PHP','Laravel','Vue.js','MySQL'] },
+          { name: 'Gestor Completo', year: 'Beta', badge: 'Beta',
+            desc: 'App mobile de gestão para pequenos negócios: pedidos, produtos, estoque, caixa e painel de indicadores. Repositório: TODO (link a adicionar).',
+            tags: ['Flutter','Dart','SQLite','Mobile'] },
+          { name: 'Plataforma de Apostas', year: '2024',
+            desc: 'Sistema completo voltado a casas de apostas, com gestão de usuários, transações e painéis administrativos.',
+            tags: ['Full Stack','Node.js','SQL','REST API'] },
         ],
         terminal: [
           { type: 'cmd',       text: 'whoami' },
           { type: 'out-green', text: 'joao-victor-fernandes' },
           { type: 'cmd',       text: 'cat sobre.txt' },
-          { type: 'out',       text: 'Fullstack Dev | ~7 anos de experiência' },
-          { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI' },
+          { type: 'out',       text: 'Full Stack Dev | ~7 anos de experiência' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → MEI → Estudos' },
           { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
           { type: 'cmd',       text: 'echo $LANGUAGES' },
           { type: 'out-green', text: 'Português (nativo) · Inglês (B2) · Espanhol (B2)' },
@@ -417,7 +437,7 @@
         footer: 'Desenvolvido por',
       },
       en: {
-        metaTitle: 'João Victor | Fullstack Developer',
+        metaTitle: 'João Victor | Full Stack Developer',
         htmlLang: 'en',
         nav: { items: [
           { num: '01', label: 'About',    href: '#sobre' },
@@ -428,57 +448,62 @@
         ], cta: 'Contact' },
         hero: {
           tag: 'Available for new opportunities',
-          titles: ['Fullstack Developer','Builder of robust APIs','React · PHP/Laravel · Node','Angular · Vue.js','Always learning'],
-          bio: 'Full-stack developer with ~7 years of experience in React, PHP/Laravel, Node.js, Angular, and Vue.js, integrating frontend, backend, and databases. Experienced in REST APIs, API testing with Postman, corrective and evolutionary maintenance, and technical support for junior developers.',
+          titles: ['Full Stack Developer','Builder of robust APIs','React · PHP/Laravel · Node','Angular · Vue.js','Always learning'],
+          bio: 'Full-stack developer with ~7 years of experience in React, PHP/Laravel, Node.js, Angular, and Vue.js, integrating frontend, backend, and databases. Experienced in REST APIs, API testing with Postman, corrective and evolutionary maintenance, and technical support for junior developers. Based in Uberaba–MG (Brazil), available for remote work (national and international).',
           ctaPrimary: 'View projects', ctaSecondary: 'Get in touch',
           cvLabel: 'Resume:', scroll: 'scroll',
         },
         sections: { sobre: 'About me', stack: 'Tech Stack', experiencia: 'Experience', projetos: 'Projects', contato: 'Contact' },
         about: {
           paragraphs: [
-            'I started my journey at Instituto Federal do Triângulo Mineiro with a technical program in IT Support and Maintenance. From there, I naturally moved into software development — and that’s where I found my calling.',
-            'I spent years at Valmont, growing from administrative assistant to full-stack developer, building and maintaining real systems, testing APIs with Postman, and mentoring junior developers. Later, I broadened my experience at Bravo Logísticas and took the leap into entrepreneurship as a self-employed developer, bringing React into my projects.',
-            'All together, that’s approximately 7 years of experience in web development, with intermediate-to-advanced English and Spanish.',
+            'I started my journey at Instituto Federal do Triângulo Mineiro (IFTM) with a technical program in IT Support and Maintenance integrated into high school. From there, I naturally moved into software development — and that’s where I found my calling.',
+            'I worked at Valmont from 04/2017 to 07/2023, starting as an Administrative Assistant and moving into programming in 09/2017, acting as a Junior Developer with informal leadership of more than 5 junior developers. I built dashboards and KPIs for agribusiness and irrigation from platform data and external APIs; took part in the central-pivot measurement platform that replaced an Excel process, with digital signature (DocuSign); developed admin panels with role hierarchy; and maps and geolocation with the Google API. Later, I worked at Bravo Logísticas (10/2023 to 06/2024) as a Developer Specialist II, responsible for merchandise tracking screens, fixes and improvements to the internal system, query optimization, and back-end (logic, structure, queries and APIs). As a self-employed developer (09/2024 to 12/2025), I worked remotely as a mid-level programmer on a marketplace and other web systems, using Docker, API consumption via Swagger, and front-end.',
+            'Education: Associate degree in Systems Analysis and Development (IFTM, 2019–2021, incomplete) and high school with integrated technical program (IFTM).',
+            'All together, that’s approximately 7 years of experience in web development, with English and Spanish at B2 level.',
           ],
-          langs: ['🇧🇷 Portuguese — Native', '🇺🇸 English — Intermediate-Advanced', '🇪🇸 Spanish — Intermediate-Advanced'],
+          langs: ['🇧🇷 Portuguese — Native', '🇺🇸 English — B2', '🇪🇸 Spanish — B2'],
         },
         stack: [
-          { label: 'FRONTEND',  items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
-          { label: 'BACKEND',   items: ['PHP','Laravel','Node.js','REST APIs'] },
+          { label: 'FRONTEND',  items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3','TypeScript'] },
+          { label: 'BACKEND',   items: ['PHP','Laravel','Node.js','REST APIs','OpenAPI/Swagger'] },
           { label: 'DATABASE',  items: ['MySQL','SQL'] },
-          { label: 'TOOLS',     items: ['Postman','API Testing','Technical Mentoring','ArcGIS','Excel','Git'] },
+          { label: 'MOBILE / CLOUD', items: ['Flutter','Dart','AWS Lambda'] },
+          { label: 'TOOLS',     items: ['Postman','API Testing','Docker','Python','Git','Scrum','Kanban','Jira','Code review','Technical Mentoring'] },
         ],
         experience: [
-          { period: '2024 — 2025', role: 'Programmer (Self-employed)', company: 'Independent Projects',
-            desc: 'Developed complete web applications for business operations as a self-employed developer, using React on the frontend and integrating interfaces, business logic, and data persistence.',
-            tags: ['React','Node.js','SQL','REST APIs'] },
-          { period: '2023 — 2024', role: 'Programmer', company: 'Bravo Logísticas',
-            desc: 'Created and maintained internal system screens, connecting frontend, backend services, and databases. Continuously expanded technical skills through Alura learning tracks provided by the company.',
+          { period: '09/2024 — 12/2025', role: 'Mid-level Programmer (Self-employed, remote)', company: 'Independent Projects',
+            desc: 'Developed a marketplace (front-end and repository, with Docker and API consumption via Swagger) and other web systems, integrating interfaces, business logic, and data persistence.',
+            tags: ['React','Node.js','Docker','Swagger','SQL'] },
+          { period: '10/2023 — 06/2024', role: 'Developer Specialist II', company: 'Bravo Logísticas',
+            desc: 'Merchandise tracking screens, fixes and improvements to the internal system, query optimization; responsible for back-end (logic, structure, queries and APIs).',
             tags: ['Angular','Node.js','SQL'] },
-          { period: '2018 — 2023', role: 'Developer / Administrative Assistant', company: 'Valmont',
-            desc: 'Transitioned from an administrative role into software development. Created and maintained systems and APIs, performed functional and integration testing with Postman, and supported junior developer interns in understanding the system and resolving technical questions.',
-            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
-          { period: '2017 — 2018', role: 'Assistant', company: 'Valmont',
-            desc: 'Supported activities involving ArcGIS, Excel spreadsheets, and the company’s own corporate platform, contributing to the organization and continuity of operational routines.',
-            tags: ['ArcGIS','Excel'] },
+          { period: '04/2017 — 07/2023', role: 'Junior Developer (informal leadership)', company: 'Valmont',
+            desc: 'Started as Administrative Assistant and moved into programming in 09/2017, informally leading more than 5 junior developers. Dashboards and KPIs for agribusiness and irrigation from platform data and external APIs; central-pivot measurement platform that replaced an Excel process, with digital signature (DocuSign); admin panels with role hierarchy; maps and geolocation with the Google API; use of Postman.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman','DocuSign','Google API'] },
+          { period: '2025 — present', role: 'Studies and personal projects', company: 'Independent',
+            desc: 'Studies and personal projects in Flutter/Dart, React, databases, automation, AI, and deploy.',
+            tags: ['Flutter','Dart','React','SQL','AI'] },
         ],
         projects: [
-          { name: 'Betting Platform', year: '2024',
-            desc: 'Complete platform for betting operations, with user management, transactions, and admin dashboards.',
-            tags: ['Fullstack','Node.js','SQL','REST API'] },
           { name: 'E-commerce Platform', year: '2024',
             desc: 'Online store with product catalog, shopping cart, and order flow.',
-            tags: ['Fullstack','Node.js','SQL'] },
+            tags: ['Full Stack','Node.js','SQL'] },
           { name: 'Internal Management System', year: '2018–2023',
             desc: 'Development and maintenance of internal ERP system modules at Valmont, including integrated APIs.',
             tags: ['PHP','Laravel','Vue.js','MySQL'] },
+          { name: 'Complete Manager', year: 'Beta', badge: 'Beta',
+            desc: 'Mobile management app for small businesses: orders, products, stock, cash register, and KPI dashboard. Repository: TODO (link to be added).',
+            tags: ['Flutter','Dart','SQLite','Mobile'] },
+          { name: 'Betting Platform', year: '2024',
+            desc: 'Complete platform for betting operations, with user management, transactions, and admin dashboards.',
+            tags: ['Full Stack','Node.js','SQL','REST API'] },
         ],
         terminal: [
           { type: 'cmd',       text: 'whoami' },
           { type: 'out-green', text: 'joao-victor-fernandes' },
           { type: 'cmd',       text: 'cat about.txt' },
-          { type: 'out',       text: 'Fullstack Dev | ~7 years of experience' },
-          { type: 'out',       text: 'Valmont → Bravo Logísticas → Self-employed' },
+          { type: 'out',       text: 'Full Stack Dev | ~7 years of experience' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → Self-employed → Studies' },
           { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
           { type: 'cmd',       text: 'echo $LANGUAGES' },
           { type: 'out-green', text: 'Portuguese (native) · English (B2) · Spanish (B2)' },
@@ -496,7 +521,7 @@
         metaTitle: 'João Victor | Desarrollador Full Stack',
         htmlLang: 'es',
         nav: { items: [
-          { num: '01', label: 'Sobre',     href: '#sobre' },
+           { num: '01', label: 'Sobre mí',  href: '#sobre' },
           { num: '02', label: 'Stack',     href: '#stack' },
           { num: '03', label: 'Exp.',      href: '#experiencia' },
           { num: '04', label: 'Proyectos', href: '#projetos' },
@@ -505,56 +530,61 @@
         hero: {
           tag: 'Disponible para nuevas oportunidades',
           titles: ['Desarrollador Full Stack','Creador de APIs robustas','React · PHP/Laravel · Node','Angular · Vue.js','Siempre aprendiendo'],
-          bio: 'Desarrollador full stack con ~7 años de experiencia en React, PHP/Laravel, Node.js, Angular y Vue.js, integrando frontend, backend y bases de datos. Experiencia en API REST, pruebas con Postman, mantenimiento correctivo y evolutivo, y apoyo técnico a desarrolladores junior.',
+          bio: 'Desarrollador full stack con ~7 años de experiencia en React, PHP/Laravel, Node.js, Angular y Vue.js, integrando frontend, backend y bases de datos. Experiencia en API REST, pruebas con Postman, mantenimiento correctivo y evolutivo, y apoyo técnico a desarrolladores junior. Basado en Uberaba–MG (Brasil), disponible para trabajo remoto (nacional e internacional).',
           ctaPrimary: 'Ver proyectos', ctaSecondary: 'Hablemos',
           cvLabel: 'Currículum:', scroll: 'scroll',
         },
         sections: { sobre: 'Sobre mí', stack: 'Tech Stack', experiencia: 'Experiencia', projetos: 'Proyectos', contato: 'Contacto' },
         about: {
           paragraphs: [
-            'Comencé mi trayectoria en el Instituto Federal do Triângulo Mineiro con la formación técnica en Soporte y Mantenimiento Informático. Desde el área técnica, migré naturalmente al desarrollo de software — y ahí encontré mi vocación.',
-            'Trabajé durante años en Valmont, donde crecí de asistente administrativo a desarrollador full stack, creando y manteniendo sistemas reales, probando APIs con Postman y apoyando a desarrolladores becarios. Después, amplié mi experiencia en Bravo Logísticas y di el paso de emprender como autónomo, llevando React a mis aplicaciones.',
-            'En total, son aproximadamente 7 años de experiencia en desarrollo web, con inglés y español de nivel intermedio-avanzado.',
+            'Comencé mi trayectoria en el Instituto Federal do Triângulo Mineiro (IFTM) con la formación técnica en Soporte y Mantenimiento Informático integrada al bachillerato. Desde el área técnica, migré naturalmente al desarrollo de software — y ahí encontré mi vocación.',
+            'Trabajé en Valmont de 04/2017 a 07/2023, entrando como Asistente Administrativo y pasando a programar en 09/2017, actuando como Desarrollador Júnior con liderazgo informal de más de 5 desarrolladores júnior. Creé dashboards y KPIs para agro e irrigación a partir de datos de la plataforma y APIs externas; participé en la plataforma de medición de pivote central que sustituyó un proceso en Excel, con firma digital (DocuSign); desarrollé paneles administrativos con jerarquía de roles; y mapas y geolocalización con la API de Google. Después, trabajé en Bravo Logísticas (10/2023 a 06/2024) como Developer Especialista II, responsable de pantallas de seguimiento de mercancías, correcciones y mejoras del sistema interno, optimización de consultas y back-end (lógica, estructura, consultas y APIs). Como independiente (09/2024 a 12/2025), trabajé de forma remota como programador de nivel medio en un marketplace y otros sistemas web, con Docker, consumo de API vía Swagger y front-end.',
+            'Formación: Tecnólogo en Análisis y Desarrollo de Sistemas (IFTM, 2019–2021, incompleto) y bachillerato con formación técnica integrada (IFTM).',
+            'En total, son aproximadamente 7 años de experiencia en desarrollo web, con inglés y español en nivel B2.',
           ],
-          langs: ['🇧🇷 Portugués — Nativo', '🇺🇸 Inglés — Intermedio-Avanzado', '🇪🇸 Español — Intermedio-Avanzado'],
+          langs: ['🇧🇷 Portugués — Nativo', '🇺🇸 Inglés — B2', '🇪🇸 Español — B2'],
         },
         stack: [
-          { label: 'FRONTEND',        items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3'] },
-          { label: 'BACKEND',         items: ['PHP','Laravel','Node.js','API REST'] },
+          { label: 'FRONTEND',        items: ['React','Vue.js','Angular','JavaScript','jQuery','HTML5','CSS3','TypeScript'] },
+          { label: 'BACKEND',         items: ['PHP','Laravel','Node.js','API REST','OpenAPI/Swagger'] },
           { label: 'BASE DE DATOS',   items: ['MySQL','SQL'] },
-          { label: 'HERRAMIENTAS',    items: ['Postman','Pruebas de API','Mentoría técnica','ArcGIS','Excel','Git'] },
+          { label: 'MOBILE / CLOUD', items: ['Flutter','Dart','AWS Lambda'] },
+          { label: 'HERRAMIENTAS',    items: ['Postman','Pruebas de API','Docker','Python','Git','Scrum','Kanban','Jira','Code review','Mentoría técnica'] },
         ],
         experience: [
-          { period: '2024 — 2025', role: 'Programador (Autónomo)', company: 'Proyectos Independientes',
-            desc: 'Desarrolló aplicaciones web completas para operaciones comerciales como desarrollador autónomo, utilizando React en el frontend e integrando interfaces, reglas de negocio y persistencia de datos.',
-            tags: ['React','Node.js','SQL','API REST'] },
-          { period: '2023 — 2024', role: 'Programador', company: 'Bravo Logísticas',
-            desc: 'Creó y mantuvo pantallas del sistema interno, conectando frontend, servicios backend y bases de datos. Amplió continuamente sus conocimientos técnicos mediante itinerarios formativos de Alura ofrecidos por la empresa.',
+          { period: '09/2024 — 12/2025', role: 'Programador de nivel medio (Independiente, remoto)', company: 'Proyectos Independientes',
+            desc: 'Desarrolló un marketplace (front-end y repositorio, con Docker y consumo de API vía Swagger) y otros sistemas web, integrando interfaces, reglas de negocio y persistencia de datos.',
+            tags: ['React','Node.js','Docker','Swagger','SQL'] },
+          { period: '10/2023 — 06/2024', role: 'Developer Especialista II', company: 'Bravo Logísticas',
+            desc: 'Pantallas de seguimiento de mercancías, correcciones y mejoras del sistema interno, optimización de consultas; responsable del back-end (lógica, estructura, consultas y APIs).',
             tags: ['Angular','Node.js','SQL'] },
-          { period: '2018 — 2023', role: 'Desarrollador / Asistente Administrativo', company: 'Valmont',
-            desc: 'Pasó de una función administrativa al desarrollo de software. Creó y mantuvo sistemas y API, realizó pruebas funcionales y de integración con Postman, y apoyó a becarios de desarrollo en la comprensión del sistema y la resolución de dudas técnicas.',
-            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman'] },
-          { period: '2017 — 2018', role: 'Asistente', company: 'Valmont',
-            desc: 'Apoyó actividades con ArcGIS, hojas de cálculo de Excel y la plataforma corporativa propia de la empresa, contribuyendo a la organización y continuidad de las rutinas operativas.',
-            tags: ['ArcGIS','Excel'] },
+          { period: '04/2017 — 07/2023', role: 'Developer Júnior (liderazgo informal)', company: 'Valmont',
+            desc: 'Entró como Asistente Administrativo y pasó a programar en 09/2017, liderando informalmente a más de 5 desarrolladores júnior. Dashboards y KPIs para agro e irrigación con datos de la plataforma y APIs externas; plataforma de medición de pivote central que sustituyó un proceso en Excel, con firma digital (DocuSign); paneles administrativos con jerarquía de roles; mapas y geolocalización con la API de Google; uso de Postman.',
+            tags: ['PHP','Laravel','Vue.js','JavaScript','jQuery','MySQL','Postman','DocuSign','Google API'] },
+          { period: '2025 — actual', role: 'Estudios y proyectos personales', company: 'Independiente',
+            desc: 'Estudios y proyectos personales en Flutter/Dart, React, bases de datos, automatización, IA y deploy.',
+            tags: ['Flutter','Dart','React','SQL','IA'] },
         ],
         projects: [
-          { name: 'Plataforma de Apuestas', year: '2024',
-            desc: 'Sistema completo para casas de apuestas, con gestión de usuarios, transacciones y paneles administrativos.',
-            tags: ['Fullstack','Node.js','SQL','REST API'] },
           { name: 'E-commerce de Productos', year: '2024',
             desc: 'Plataforma de comercio electrónico con catálogo de productos, carrito y flujo de pedidos.',
-            tags: ['Fullstack','Node.js','SQL'] },
+            tags: ['Full Stack','Node.js','SQL'] },
           { name: 'Sistema de Gestión Interna', year: '2018–2023',
             desc: 'Desarrollo y mantenimiento de módulos del sistema ERP interno en Valmont, incluyendo APIs integradas.',
             tags: ['PHP','Laravel','Vue.js','MySQL'] },
+          { name: 'Gestor Completo', year: 'Beta', badge: 'Beta',
+            desc: 'App móvil de gestión para pequeños negocios: pedidos, productos, stock, caja y panel de indicadores. Repositorio: TODO (enlace por añadir).',
+            tags: ['Flutter','Dart','SQLite','Mobile'] },
+          { name: 'Plataforma de Apuestas', year: '2024',
+            desc: 'Sistema completo para casas de apuestas, con gestión de usuarios, transacciones y paneles administrativos.',
+            tags: ['Full Stack','Node.js','SQL','REST API'] },
         ],
         terminal: [
           { type: 'cmd',       text: 'whoami' },
           { type: 'out-green', text: 'joao-victor-fernandes' },
           { type: 'cmd',       text: 'cat sobre.txt' },
           { type: 'out',       text: 'Full Stack Dev | ~7 años de experiencia' },
-          { type: 'out',       text: 'Valmont → Bravo Logísticas → Autónomo' },
+          { type: 'out',       text: 'Valmont → Bravo Logísticas → Independiente → Estudios' },
           { type: 'out',       text: 'React · PHP/Laravel · Vue · Angular · Node · MySQL' },
           { type: 'cmd',       text: 'echo $LANGUAGES' },
           { type: 'out-green', text: 'Portugués (nativo) · Inglés (B2) · Español (B2)' },
@@ -855,9 +885,10 @@
         document.title = t.metaTitle;
       }, [lang]);
 
-      return (
-        <LangContext.Provider value={{ lang, setLang }}>
-          <Nav />
+       return (
+         <LangContext.Provider value={{ lang, setLang }}>
+           <main>
+           <Nav />
 
           {/* HERO */}
           <div className="hero-wrap">
@@ -949,8 +980,10 @@
               {t.projects.map((p, i) => (
                 <FadeIn key={i} delay={i * 100}>
                   <div className="project-card">
+                    {p.image && <img className="project-image" src={p.image} alt={p.name} loading="lazy" />}
+                    {!p.image && <div className="project-image-placeholder" aria-hidden="true" />}
                     <div className="project-card-header">
-                      <span className="project-name">{p.name}</span>
+                      <span className="project-name">{p.name}{p.badge ? <span className="project-badge">{p.badge}</span> : null}</span>
                       <span className="project-year">{p.year}</span>
                     </div>
                     <p className="project-desc">{p.desc}</p>
@@ -1011,7 +1044,8 @@
           <footer>
             <p>{t.footer} <span>João Victor Fernandes</span></p>
           </footer>
-        </LangContext.Provider>
+           </main>
+         </LangContext.Provider>
       );
     }
 
